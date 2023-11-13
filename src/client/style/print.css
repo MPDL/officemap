@@ -1,0 +1,10 @@
+@media print {
+    body {
+        visibility: hidden;
+    }
+    .officemap-print-map-section {
+        visibility: visible;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}
