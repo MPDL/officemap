@@ -1,6 +1,7 @@
 import React from 'react'
 import EmployeeFilter from '../employeefilter/EmployeeFilter'
 import RoomFilter from '../roomfilter/RoomFilter'
+import PrinterFilter from '../printerfilter/PrinterFilter'
 
 const Filter = () => {
   return (
@@ -12,6 +13,7 @@ const Filter = () => {
       <div> 
         <EmployeeFilter />
         <RoomFilter />
+        <PrinterFilter />
       </div>
     </div>
   )

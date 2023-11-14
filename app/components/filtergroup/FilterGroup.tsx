@@ -2,7 +2,7 @@ import React from 'react'
 
 
 
-const FilterGroup = async ({name = "group", groups = ["element1", "element2"]}) => {
+const FilterGroup = async ({name = "group", groups = []}) => {
 
   return (
     <div>
