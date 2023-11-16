@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  officemap-sample-web:
+    build:
+      context: ../../
+      dockerfile: docker/sample/Dockerfile
+    image: officemap-sample-web
+    ports:
+      - '1111:3000'
