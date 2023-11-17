@@ -39,9 +39,10 @@ next-env.d.ts
 .idea
 
 # docker
-/api/docker/development.local
-/api/docker/production
-/api/docker/staging
 /docker/development.local/docker-compose.yml
+/docker/development.local/.env
+/docker/development.local/mock_server
 /docker/production/docker-compose.yml
+/docker/production/.env
 /docker/staging/docker-compose.yml
+/docker/staging/.env

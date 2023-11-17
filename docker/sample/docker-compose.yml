@@ -6,5 +6,20 @@ services:
       context: ../../
       dockerfile: docker/sample/Dockerfile
     image: officemap-sample-web
+    depends_on:
+      officemap-sample-api:
+        condition: service_started
     ports:
       - '1111:3000'
+  officemap-sample-api:
+    build:
+      context: ../../api
+      dockerfile: docker/Dockerfile
+    environment:
+      - GATEWAY_PORT=$GATEWAY_PORT
+      - GATEWAY_BASE_URL=$GATEWAY_BASE_URL
+      - GATEWAY_URL_PATH=$GATEWAY_URL_PATH
+      - ROOMS_JSON_URL=$ROOMS_JSON_URL
+      - PRINTERS_JSON_URL=$PRINTERS_JSON_URL
+      - GROUNDFLOOR_IMAGE_URL=$GROUNDFLOOR_IMAGE_URL
+    image: officemap-sample-api
