@@ -14,7 +14,7 @@ services:
   officemap-sample-api:
     build:
       context: ../../api
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     environment:
       - GATEWAY_PORT=$GATEWAY_PORT
       - GATEWAY_BASE_URL=$GATEWAY_BASE_URL
