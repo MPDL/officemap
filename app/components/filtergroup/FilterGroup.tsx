@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ToggleButton from '../togglebutton/ToggleButton'
 
 
 
-const FilterGroup = async ({name = "group", groups = []}) => {
+const FilterGroup = async ({name = "group", groups = [""]}) => {
+  const groupStates = groups.map (name => {
+    const [isChecked, setIsChecked] = useState(false);
+    {name: name, state: isChecked, setState: setIsChecked}
+  });
+
 
   return (
     <div>
@@ -12,7 +17,7 @@ const FilterGroup = async ({name = "group", groups = []}) => {
         {name}
       </div>
       <div className='ml-2'>
-        {groups.map(element => {
+        {groupsStates.map(element => {
           return (
             <div className='flex flex-row'>
               <ToggleButton/>

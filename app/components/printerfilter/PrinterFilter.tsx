@@ -3,7 +3,7 @@ import FilterGroup from '../filtergroup/FilterGroup';
 
 
 const PrinterFilter = async () => {
-  return (<FilterGroup name='Printer'/>);
+  return (<FilterGroup name='Printer' groups={[]}/>);
 }
 
 export default PrinterFilter

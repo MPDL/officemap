@@ -7,8 +7,8 @@ const EmployeeFilter = async () => {
   const employees:Employee[] = await fetchEmployee();
   const types:string[] = Array.from(new Set<string>(employees?.map(employee => employee.department)));
 
-  return <div></div>
-  // return (<FilterGroup name='Employee' groups={types}/>);
+  // return <div></div>
+  return (<FilterGroup name='Employee' groups={types}/>);
 }
 
 export default EmployeeFilter

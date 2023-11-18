@@ -52,5 +52,5 @@ func StartHttpServer(employees []leaflet_map.Employee, rooms []leaflet_map.Room,
 	})
 
 	fmt.Println("Starting server ...")
-	router.Run("localhost:" + serverPort)
+	router.Run("0.0.0.0:" + serverPort)
 }
