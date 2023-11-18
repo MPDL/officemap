@@ -12,7 +12,7 @@ ADD . /app
 RUN go mod download
 
 # Build
-RUN go build -o /api
+RUN go build -o ./api
 
 # Optional:
 # To bind to a TCP port, runtime parameters must be supplied to the docker command.
