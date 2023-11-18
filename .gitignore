@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editors
+.idea
+
+# docker
+/docker/development.local/docker-compose.yml
+/docker/development.local/.env
+/docker/development.local/mock_server
+/docker/production/docker-compose.yml
+/docker/production/.env
+/docker/staging/docker-compose.yml
+/docker/staging/.env
