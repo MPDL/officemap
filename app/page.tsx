@@ -1,4 +1,5 @@
-import Filter from './components/filter/Filter'
+import Filter from './components/Filter/Filter'
+import Search from './components/Search/Search'
 import dynamic from "next/dynamic";
 
 // Followed instructions at https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
@@ -13,7 +14,8 @@ const DynamicLeafletMap = dynamic(() => import('./components/leafletmap/LeafletM
 export default function Home() {
   return (
     <main>
-        {/*<Filter/>*/}
+        <Search/>
+        <Filter/>
         <DynamicLeafletMap></DynamicLeafletMap>
     </main>
   )
