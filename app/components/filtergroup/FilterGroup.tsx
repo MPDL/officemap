@@ -4,10 +4,10 @@ import ToggleButton from '../togglebutton/ToggleButton'
 
 
 const FilterGroup = async ({name = "group", groups = [""]}) => {
-  const groupStates = groups.map (name => {
-    const [isChecked, setIsChecked] = useState(false);
-    {name: name, state: isChecked, setState: setIsChecked}
-  });
+  // const groupStates = groups.map (name => {
+  //   const [isChecked, setIsChecked] = useState(false);
+  //   {name: name, state: isChecked, setState: setIsChecked}
+  // });
 
 
   return (
@@ -16,15 +16,15 @@ const FilterGroup = async ({name = "group", groups = [""]}) => {
         <ToggleButton />
         {name}
       </div>
-      <div className='ml-2'>
-        {groupsStates.map(element => {
-          return (
-            <div className='flex flex-row'>
-              <ToggleButton/>
-              {element}
-            </div>)
-        })}
-      </div>
+      {/*<div className='ml-2'>*/}
+      {/*  {groupsStates.map(element => {*/}
+      {/*    return (*/}
+      {/*      <div className='flex flex-row'>*/}
+      {/*        <ToggleButton/>*/}
+      {/*        {element}*/}
+      {/*      </div>)*/}
+      {/*  })}*/}
+      {/*</div>*/}
     </div>
   )
 }

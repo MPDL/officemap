@@ -1,13 +1,14 @@
-import { fetchEmployee, Employee } from '@/app/api/api';
+"use client"
+
 import React from 'react'
 import FilterGroup from '../filtergroup/FilterGroup';
+import {useEmployees} from "@/app/api/api";
 
 
-const EmployeeFilter = async () => {
-  const employees:Employee[] = await fetchEmployee();
+const EmployeeFilter = () => {
+  const { employees, isLoading, isError } = useEmployees();
   const types:string[] = Array.from(new Set<string>(employees?.map(employee => employee.department)));
 
-  // return <div></div>
   return (<FilterGroup name='Employee' groups={types}/>);
 }
 

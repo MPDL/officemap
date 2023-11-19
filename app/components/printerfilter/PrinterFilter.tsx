@@ -1,8 +1,10 @@
+"use client"
+
 import React from 'react'
 import FilterGroup from '../filtergroup/FilterGroup';
 
 
-const PrinterFilter = async () => {
+const PrinterFilter = () => {
   return (<FilterGroup name='Printer' groups={[]}/>);
 }
 
