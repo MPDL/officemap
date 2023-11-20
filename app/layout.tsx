@@ -9,13 +9,47 @@ import 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import './globals.css'
+import localFont from 'next/font/local'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Officemap',
-  description: 'office map ',
+    title: 'Officemap',
+    description: 'office map ',
+    authors: [
+        {
+            name: 'Felix Riehm',
+            url: 'https://github.com/felixriehm'
+        },
+        {
+            name: 'Jakob Lambert-Hartmann',
+            url: 'https://github.com/iaquobe'
+        },
+    ],
 }
+
+const noto_sans_font = localFont(
+    {
+        src: [
+            {
+                path: '../public/font/Noto_Sans/NotoSans-Regular.ttf',
+                weight: '400',
+                style: 'normal',
+            },
+            {
+                path: '../public/font/Noto_Sans/NotoSans-Bold.ttf',
+                weight: '700',
+                style: 'normal',
+            },
+        ],
+    variable: '--font-noto-sans',
+})
+
+const material_icons_rounded_font = localFont(
+    {
+        src: '../public/font/MaterialIcons/MaterialSymbolsRounded[FILL,GRAD,opsz,wght].woff2',
+        variable: '--font-material-icons-rounded',
+    })
 
 export default function RootLayout({
   children,
@@ -23,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${noto_sans_font.variable} ${material_icons_rounded_font.variable}`}>
       <body className={inter.className}>{children}
       </body>
     </html>
