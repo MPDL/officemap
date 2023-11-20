@@ -1,26 +1,38 @@
-import React, { Dispatch, SetStateAction } from 'react'
+"use client"
+
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Filter from '../Filter/Filter'
 import dynamic from 'next/dynamic'
-import { useRooms } from '@/app/api/api'
+import { Room, Employee, Printer } from '@/app/api/api'
 import FilterGroup from '../FilterGroup/FilterGroup'
+import { createEmployeeFilterState, createRoomFilterState, createPrinterFilterState } from './State'
+
+
 
 const DynamicLeafletMap = dynamic(() => import('../LeafletMap/LeafletMap'), {
     ssr: false,
     loading: () => <div>Loading map...</div>,
 })
 
-const PageContent = () => {
+interface Props {
+  rooms: Room[],
+  printers: Printer[],
+  employees: Employee[],
+}
 
-  const { rooms, isLoading: isRoomsLoading, isError: isRoomsError } = useRooms();
-  const types:string[] = Array.from(new Set<string>(rooms?.map(room => room.type)));
 
-  if (isRoomsLoading)
-    return <div></div>;
+const PageContent = ({rooms, printers, employees} : Props ) => {
+  const roomFilterState = createRoomFilterState(rooms);
+  const employeeFilterState = createEmployeeFilterState(employees);
+  const printerFilterState = createPrinterFilterState(printers);
+  console.log(rooms)
 
   return (
     <div>
       <Filter>
-        <FilterGroup name='Room' groups={types}/>
+        <FilterGroup state={roomFilterState}/>
+        <FilterGroup state={employeeFilterState}/>
+        <FilterGroup state={printerFilterState}/>
       </Filter>
       <DynamicLeafletMap/>
     </div>
@@ -29,20 +41,3 @@ const PageContent = () => {
 
 export default PageContent
 
-export interface State {
-  filterGroups: FilterGroup[],
-  searchString: string,
-}
-
-export interface FilterGroup {
-  mainToggle: ToggleState,
-  subToggles: ToggleState[], 
-}
-
-export interface ToggleState {
-  name: string,
-  state: boolean,
-  setState: Dispatch<SetStateAction<boolean>>,
-
-  color: string,
-}

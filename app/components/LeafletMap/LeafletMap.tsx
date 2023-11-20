@@ -3,7 +3,7 @@
 import {useEffect, useRef} from "react";
 import {LeafletMapController} from "@/app/components/LeafletMap/LeafletMapController";
 import {useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
-import 'leaflet.markercluster/dist/leaflet.markercluster.js'
+// import 'leaflet.markercluster/dist/leaflet.markercluster.js'
 
 // followed instructions at https://react.dev/reference/react/useEffect#controlling-a-non-react-widget
 export default function LeafletMap() {

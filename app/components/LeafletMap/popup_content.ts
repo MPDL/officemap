@@ -1,4 +1,4 @@
-import {MapEntityType} from "@/app/components/leafletmap/map_entity";
+import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 
 export class PopupContent {
     private readonly title: string = 'title'

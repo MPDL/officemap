@@ -1,26 +1,23 @@
 "use client"
-import { Dispatch, SetStateAction } from "react"
-import { ToggleSubState } from "../ToggleSub/ToggleSub"
 import Toggle from "@/app/Toggle/Toggle"
+import { ToggleState } from "../PageContent/State"
 
-export interface ToggleMainState {
-  name : string,
-  state: boolean,
-  setState: Dispatch<SetStateAction<boolean>>,
-  substates: [ToggleSubState],
+
+interface Props {
+  main: ToggleState,
+  sub: ToggleState[],
 }
 
-
-const ToggleMain = ({name, state, setState, substates} : ToggleMainState) => {
+const ToggleMain = ({main, sub}: Props) => {
   const handleCheckboxChange = () => {
-    setState(!state)
-    substates.forEach(substate =>{
-      substate.setState(!state);
+    main.setState(!main.state)
+    sub.forEach(substate =>{
+      substate.setState(!main.state);
     })
   }
 
   return (
-    <Toggle name={name} state={state} onChange={handleCheckboxChange}/>
+    <Toggle name={main.name} state={main.state} onChange={handleCheckboxChange} color={main.color}/>
   )
 }
 

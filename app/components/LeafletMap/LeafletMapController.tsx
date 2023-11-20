@@ -5,6 +5,9 @@ import {MarkerFactory} from "@/app/components/LeafletMap/map_marker_factory";
 import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 import {PolygonFactory} from "@/app/components/LeafletMap/map_polygon";
 
+import "leaflet.markercluster/dist/leaflet.markercluster.js"
+
+
 export class LeafletMapController {
     private readonly map: L.Map
     private readonly bounds :LatLngBounds

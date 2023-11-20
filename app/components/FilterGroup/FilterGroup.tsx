@@ -1,24 +1,21 @@
 "use client"
 import React, { useState } from 'react'
-import ToggleSub, { ToggleSubState } from '../ToggleSub/ToggleSub';
+import { FilterGroupState, ToggleState } from '../PageContent/State';
+import ToggleSub from '../ToggleSub/ToggleSub';
 import ToggleMain from '../ToggleMain/ToggleMain';
 
+interface Props {
+  state: FilterGroupState
+}
 
-
-const FilterGroup = ({name = "group", groups = [""]}) => {
-  const groupStates = groups.map(name => {
-    const [isChecked, setIsChecked] = useState(false);
-    return {name: name, state: isChecked, setState: setIsChecked} as ToggleSubState ;
-  }) as [ToggleSubState];
-
-  const [isChecked, setIsChecked] = useState(false);
+const FilterGroup = ({state} : Props) => {
 
   return (
     <div className='flex flex-col mt-2'>
-      <ToggleMain name={name} state={isChecked} setState={setIsChecked} substates={groupStates}/>
+      <ToggleMain main={state.mainToggle} sub={state.subToggles}/>
       <div className='ml-6'>
-        {groupStates.map(({name, state, setState} : ToggleSubState) => {
-          return <ToggleSub name={name} state={state} setState={setState} />
+        {state.subToggles.map(({name, state, setState, color} : ToggleState) => {
+          return <ToggleSub name={name} state={state} setState={setState} color={color}/>
         })}
       </div>
     </div>

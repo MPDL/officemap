@@ -1,4 +1,4 @@
-import PageContent from './components/PageContent/PageContent'
+import LoadingPage from './components/PageContent/LoadingPage'
 
 // Followed instructions at https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
 // In import('path/to/component'), the path must be explicitly written. It can't be a template string nor a variable.
@@ -7,7 +7,7 @@ import PageContent from './components/PageContent/PageContent'
 export default function Home() {
   return (
     <main>
-      <PageContent/>
+      <LoadingPage/>
     </main>
   )
 }
