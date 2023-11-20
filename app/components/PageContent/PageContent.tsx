@@ -5,7 +5,7 @@ import Filter from '../Filter/Filter'
 import dynamic from 'next/dynamic'
 import { Room, Employee, Printer } from '@/app/api/api'
 import FilterGroup from '../FilterGroup/FilterGroup'
-import { createEmployeeFilterState, createRoomFilterState, createPrinterFilterState } from './State'
+import { useEmployeeFilterState, useRoomFilterState, usePrinterFilterState } from './State'
 
 
 
@@ -26,9 +26,9 @@ interface Props {
 
 
 const PageContent = ({rooms, printers, employees} : Props ) => {
-  const roomFilterState = createRoomFilterState(rooms);
-  const employeeFilterState = createEmployeeFilterState(employees);
-  const printerFilterState = createPrinterFilterState(printers);
+  const roomFilterState = useRoomFilterState(rooms);
+  const employeeFilterState = useEmployeeFilterState(employees);
+  const printerFilterState = usePrinterFilterState(printers);
   console.log(rooms)
 
   return (
