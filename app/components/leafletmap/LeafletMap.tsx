@@ -3,6 +3,7 @@
 import {useEffect, useRef} from "react";
 import {LeafletMapController} from "@/app/components/leafletmap/LeafletMapController";
 import {useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
+import 'leaflet.markercluster/dist/leaflet.markercluster.js'
 
 // followed instructions at https://react.dev/reference/react/useEffect#controlling-a-non-react-widget
 export default function LeafletMap() {
@@ -21,6 +22,7 @@ export default function LeafletMap() {
         const map = mapRef.current;
         if (map != null){
             map.setBackgroundImageOnce(groundfloorImageObjectUrl)
+            map.markAllEmployees(employees)
         }
     }, [rooms,employees,printers, groundfloorImageObjectUrl]);
 

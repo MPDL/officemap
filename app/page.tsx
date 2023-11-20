@@ -14,8 +14,8 @@ const DynamicLeafletMap = dynamic(() => import('./components/leafletmap/LeafletM
 export default function Home() {
   return (
     <main>
-        <Search/>
-        <Filter/>
+        {/*<Search/>*/}
+        {/*<Filter/>*/}
         <DynamicLeafletMap></DynamicLeafletMap>
     </main>
   )
