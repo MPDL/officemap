@@ -1,9 +1,9 @@
 import L, {LatLng, LatLngBounds} from 'leaflet';
 import {Employee, Printer, Room} from "@/app/api/api";
-import {InfoPanel} from "@/app/components/leafletmap/info_panel";
-import {MarkerFactory} from "@/app/components/leafletmap/map_marker_factory";
-import {MapEntityType} from "@/app/components/leafletmap/map_entity";
-import {PolygonFactory} from "@/app/components/leafletmap/map_polygon";
+import {InfoPanel} from "@/app/components/LeafletMap/info_panel";
+import {MarkerFactory} from "@/app/components/LeafletMap/map_marker_factory";
+import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
+import {PolygonFactory} from "@/app/components/LeafletMap/map_polygon";
 
 export class LeafletMapController {
     private readonly map: L.Map

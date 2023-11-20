@@ -1,7 +1,7 @@
 "use client"
 
 import {useEffect, useRef} from "react";
-import {LeafletMapController} from "@/app/components/leafletmap/LeafletMapController";
+import {LeafletMapController} from "@/app/components/LeafletMap/LeafletMapController";
 import {useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
 import 'leaflet.markercluster/dist/leaflet.markercluster.js'
 

@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import Filter from '../Filter/Filter'
 import dynamic from 'next/dynamic'
+import { useRooms } from '@/app/api/api'
+import FilterGroup from '../FilterGroup/FilterGroup'
 
 const DynamicLeafletMap = dynamic(() => import('../LeafletMap/LeafletMap'), {
     ssr: false,
@@ -8,9 +10,18 @@ const DynamicLeafletMap = dynamic(() => import('../LeafletMap/LeafletMap'), {
 })
 
 const PageContent = () => {
+
+  const { rooms, isLoading: isRoomsLoading, isError: isRoomsError } = useRooms();
+  const types:string[] = Array.from(new Set<string>(rooms?.map(room => room.type)));
+
+  if (isRoomsLoading)
+    return <div></div>;
+
   return (
     <div>
-      <Filter/>
+      <Filter>
+        <FilterGroup name='Room' groups={types}/>
+      </Filter>
       <DynamicLeafletMap/>
     </div>
   )
@@ -19,11 +30,11 @@ const PageContent = () => {
 export default PageContent
 
 export interface State {
-  toggleGroups: ToggleGroup[],
+  filterGroups: FilterGroup[],
   searchString: string,
 }
 
-export interface ToggleGroup {
+export interface FilterGroup {
   mainToggle: ToggleState,
   subToggles: ToggleState[], 
 }
