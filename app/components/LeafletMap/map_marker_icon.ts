@@ -1,6 +1,5 @@
 import L from "leaflet";
 import CustomMarkerIconSvg from "@/public/images/glyph-marker-icon-custom.svg";
-import CustomMarkerIconGlyph from "@/public/images/marker-glyph-custom.svg";
 
 export class CategoryMarkerIcon {
     private readonly _html: string
@@ -24,20 +23,9 @@ export class CategoryMarkerIcon {
         let markerIconHtml = ''
 
         if(title !== undefined){
-            markerIconHtml =
-                `<div class="officemap-marker-icon">
-                <div class="officemap-marker-icon-title">${title}</div>
-                <div class="officemap-marker-icon-pin" style="background-image:  url(${baseIcon})">
-                    <span class="officemap-marker-icon-glyph material-symbols-rounded officemap-symbol-base">${iconGlyph}</span>
-                </div>
-            </div>`
+            markerIconHtml = createMarkerIcon(iconGlyph,baseIcon, title)
         } else {
-            markerIconHtml =
-                `<div class="officemap-marker-icon">
-                <div class="officemap-marker-icon-pin" style="background-image:  url(${baseIcon})">
-                    <span class="officemap-marker-icon-glyph material-symbols-rounded officemap-symbol-base">${iconGlyph}</span>
-                </div>
-            </div>`
+            markerIconHtml = createMarkerIcon(iconGlyph,baseIcon)
         }
 
         return markerIconHtml;
@@ -73,13 +61,7 @@ export class CustomMarkerIcon {
         this._divIcon = markerIcon
     }
     private createCustomMarkerIconHtml(): string {
-        let markerIconHtml =
-            `<div class="officemap-marker-icon">
-                <div class="officemap-marker-icon-pin" style="background-image:  url(${CustomMarkerIconSvg.src})">
-                    <span class="officemap-marker-icon-glyph material-symbols-rounded officemap-symbol-base">flag</span>
-                </div>
-            </div>`
-        return markerIconHtml;
+        return createMarkerIcon('flag', CustomMarkerIconSvg.src);
     }
 
     public html(){
@@ -89,4 +71,18 @@ export class CustomMarkerIcon {
     public divIcon(){
         return this._divIcon
     }
+}
+
+function createMarkerIcon(icon: string, iconSvgSrc: string, title?: string){
+    let titleHtml = '';
+    if(title){
+        titleHtml = `<div class="text-[10px] w-[100px] text-center whitespace-nowrap overflow-hidden overflow-ellipsis font-officemap text-officemap-black" style="text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">${title}</div>`
+    }
+
+    return `<div class="flex flex-col items-center">
+                ${titleHtml}
+                <div class="bg-no-repeat bg-contain bg-center min-h-[41px] min-w-[25px] text-center" style="background-image:  url(${iconSvgSrc})">
+                    <span class="font-officemap-icon mt-1 text-officemap-white text-base">${icon}</span>
+                </div>
+            </div>`
 }

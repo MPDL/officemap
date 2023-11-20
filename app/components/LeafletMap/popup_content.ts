@@ -9,11 +9,9 @@ export class PopupContent {
     private readonly root:  HTMLDivElement;
     private readonly lat:  string | undefined;
     private readonly lng:  string | undefined;
-    private button:  HTMLButtonElement | undefined;
 
     constructor(title: string, data: Map<string, string>, markerHtml: string, entityId: string, entityType: MapEntityType, lat?: string, lng?:string) {
         this.root = document.createElement('div')
-        this.root.setAttribute('class', 'officemap-popup')
         this.entityType = entityType
         this.title = title
         this.data = data
@@ -26,7 +24,6 @@ export class PopupContent {
 
     private renderDataHtml(): string{
         let dataDiv = document.createElement('div')
-        dataDiv.setAttribute('class', 'officemap-popup-data')
 
         for (let [key, value] of this.data) {
             let dataPairDiv = document.createElement('div')
@@ -45,9 +42,6 @@ export class PopupContent {
     }
 
     private renderButton(){
-        let btn = document.createElement('button')
-        btn.setAttribute('class', 'officemap-btn')
-
         let mapEntityAsString;
         let param = ''
         switch (this.entityType) {
@@ -68,24 +62,22 @@ export class PopupContent {
                 param = `${this.lat},${this.lng}`
                 break;
         }
-        if(mapEntityAsString !== undefined){
-            // otherwise there is no way to add the event listener after the op up is rendered
-            // adding event listener would need to be called after the pop up content is added to the DOM, otherwise this event listener will not trigger
-            btn.setAttribute('onclick', `navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + '?${mapEntityAsString}=${param}')`)
-        }
 
-        btn.innerHTML = `<span class="officemap-btn-icon material-symbols-rounded officemap-symbol-base">pin_drop</span> Copy location link`
+        // otherwise there is no way to add the event listener after the op up is rendered
+        // adding event listener would need to be called after the pop up content is added to the DOM, otherwise this event listener will not trigger
+        let onClickScript = `navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + '?${mapEntityAsString}=${param}')`
 
-        this.button = btn
-        return btn.outerHTML
+        return `<button class="bg-officemap-blue-400 hover:bg-officemap-blue-700 border-none text-officemap-white py-3 px-4 text-base cursor-pointer rounded-xl leading-[1.15]" onclick=${onClickScript})>
+                <span class="font-officemap-icon inline-block relative text-officemap-white text-lg align-bottom leading-none">pin_drop</span> Copy location link
+            </button>`
     }
 
     private renderHtml(){
         let renderedHtml = `
-            <div class="officemap-popup-container">
-                <div class="officemap-popup-container-marker">${this.markerHtml}</div>
-                <div class="officemap-popup-container-content">
-                    <div class="officemap-popup-title">${this.title}</div>
+            <div class="flex">
+                <div class="my-auto mx-0 pr-3">${this.markerHtml}</div>
+                <div class="flex flex-col">
+                    <div class="text-base font-bold pb-1">${this.title}</div>
                     ${this.renderDataHtml()}
                     <div class="pt-3">
                         ${this.renderButton()}

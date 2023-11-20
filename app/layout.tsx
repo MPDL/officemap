@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet/dist/images/layers.png'
 import 'leaflet/dist/images/layers-2x.png'
@@ -10,8 +9,6 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import './globals.css'
 import localFont from 'next/font/local'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: 'Officemap',
@@ -58,7 +55,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${noto_sans_font.variable} ${material_icons_rounded_font.variable}`}>
-      <body className={inter.className}>{children}
+      <body className="font-officemap">{children}
       </body>
     </html>
   )

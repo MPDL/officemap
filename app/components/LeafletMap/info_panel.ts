@@ -3,10 +3,11 @@ export class InfoPanel {
     private data: Map<string, string> = new Map([["key", "value"]]);
     private markerHtml: string = ''
     private readonly root:  HTMLDivElement;
+    private readonly infoPanelCss = "rounded-[20px] bg-officemap-white w-fit p-5 mb-[26px] ml-[26px] font-officemap shadow-[0_2px_5px_1px_rgba(64,60,67,0.16)]"
 
     constructor() {
         this.root = document.createElement('div')
-        this.root.setAttribute('class', 'officemap-infopanel')
+        this.root.setAttribute('class', `hidden ${this.infoPanelCss}`)
     }
 
     public setData(title: string, data: Map<string, string>, markerHtml: string){
@@ -18,15 +19,14 @@ export class InfoPanel {
 
     public show(show: boolean){
         if(show){
-            this.root.setAttribute('class', 'officemap-infopanel show')
+            this.root.setAttribute('class', `block ${this.infoPanelCss}`)
         } else {
-            this.root.setAttribute('class', 'officemap-infopanel')
+            this.root.setAttribute('class', `hidden ${this.infoPanelCss}`)
         }
     }
 
     public renderDataHtml(): string{
         let dataDiv = document.createElement('div')
-        dataDiv.setAttribute('class', 'officemap-infopanel-data')
 
         for (let [key, value] of this.data) {
             let dataPairDiv = document.createElement('div')
@@ -46,10 +46,10 @@ export class InfoPanel {
 
     private renderHtml(){
         let renderedHtml = `
-            <div class="officemap-infopanel-container">
-                <div class="officemap-infopanel-container-marker">${this.markerHtml}</div>
-                <div class="officemap-infopanel-container-content">
-                    <div class="officemap-infopanel-title">${this.title}</div>
+            <div class="flex">
+                <div class="my-auto mx-0 pr-3">${this.markerHtml}</div>
+                <div class="flex flex-col">
+                    <div class="text-base font-bold pb-1">${this.title}</div>
                     ${this.renderDataHtml()}
                 </div>
             </div>
