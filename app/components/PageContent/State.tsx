@@ -19,7 +19,7 @@ export interface ToggleState {
   color: string;
 }
 
-export const createRoomFilterState = (rooms: Room[]): FilterGroupState => {
+export function useRoomFilterState (rooms: Room[]): FilterGroupState {
   const subToggles = Array.from(
     new Set<string>(rooms?.map((room) => room.type)),
   ).map((type) => {
@@ -38,9 +38,7 @@ export const createRoomFilterState = (rooms: Room[]): FilterGroupState => {
   return { mainToggle, subToggles };
 };
 
-export const createEmployeeFilterState = (
-  employees: Employee[],
-): FilterGroupState => {
+export function useEmployeeFilterState ( employees: Employee[],): FilterGroupState {
   const subToggles = Array.from(
     new Set<string>(
       employees?.map((employee) => employee.department),
@@ -66,7 +64,7 @@ export const createEmployeeFilterState = (
   return { mainToggle, subToggles };
 };
 
-export const createPrinterFilterState = (printers: Printer[]) => {
+export function usePrinterFilterState (printers: Printer[]) {
   const [state, setState] = useState(true);
   const mainToggle = {
     state: state,

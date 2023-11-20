@@ -15,7 +15,7 @@ const FilterGroup = ({state} : Props) => {
       <ToggleMain main={state.mainToggle} sub={state.subToggles}/>
       <div className='ml-6'>
         {state.subToggles.map(({name, state, setState, color} : ToggleState) => {
-          return <ToggleSub name={name} state={state} setState={setState} color={color}/>
+          return <ToggleSub key={name} name={name} state={state} setState={setState} color={color}/>
         })}
       </div>
     </div>
