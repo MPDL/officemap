@@ -1,14 +1,8 @@
 "use client"
 
 import {useEffect, useRef} from "react";
-<<<<<<< HEAD
-import {LeafletMapController} from "@/app/components/LeafletMap/LeafletMapController";
-import {useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
-// import 'leaflet.markercluster/dist/leaflet.markercluster.js'
-=======
 import {useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
 import {LeafletMapController} from "@/app/components/LeafletMap/LeafletMapController";
->>>>>>> b626c7386b96a9164ec8850d5749fe861d0381c4
 
 // followed instructions at https://react.dev/reference/react/useEffect#controlling-a-non-react-widget
 export default function LeafletMap() {

@@ -4,13 +4,7 @@ import {InfoPanel} from "@/app/components/LeafletMap/info_panel";
 import {MarkerFactory} from "@/app/components/LeafletMap/map_marker_factory";
 import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 import {PolygonFactory} from "@/app/components/LeafletMap/map_polygon";
-<<<<<<< HEAD
-
-import "leaflet.markercluster/dist/leaflet.markercluster.js"
-
-=======
 import 'leaflet.markercluster/dist/leaflet.markercluster.js'
->>>>>>> b626c7386b96a9164ec8850d5749fe861d0381c4
 
 export class LeafletMapController {
     private readonly map: L.Map

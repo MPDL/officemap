@@ -72,7 +72,7 @@ export const createPrinterFilterState = (printers: Printer[]) => {
     state: state,
     setState: setState,
     name: "Printers",
-    color: "blue",
+    color: "red",
   };
 
   return { mainToggle, subToggles: [] };
