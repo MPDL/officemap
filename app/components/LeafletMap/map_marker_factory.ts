@@ -6,7 +6,7 @@ import MarkerIconRoom from "@/public/images/glyph-marker-icon-room.svg"
 import MarkerIconPrinter from "@/public/images/glyph-marker-icon-printer.svg"
 import {InfoPanel} from "./info_panel";
 import {Employee, Printer, Room} from "@/app/api/api";
-import {MapEntityType} from "@/app/components/leafletmap/map_entity";
+import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 
 export class MarkerFactory{
     private infoPanel: InfoPanel

@@ -3,7 +3,7 @@ import {CategoryMarkerIcon} from "./map_marker_icon";
 import MarkerIconRoom from "@/public/images/glyph-marker-icon-room.svg";
 import L from "leaflet";
 import {PopupContent} from "./popup_content";
-import {MapEntityType} from "@/app/components/leafletmap/map_entity";
+import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 import {ApiLeafletLatLng, Room} from "@/app/api/api";
 
 export class PolygonFactory {
