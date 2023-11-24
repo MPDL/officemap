@@ -1,5 +1,5 @@
 "use client"
-import Toggle from '@/app/Toggle/Toggle'
+import Toggle from '@/app/components/Toggle/Toggle'
 import React, { Dispatch, SetStateAction } from 'react'
 import { ToggleState } from '../PageContent/State'
 
