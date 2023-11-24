@@ -64,7 +64,7 @@ export class LeafletMapController {
 
         // create custom marker and info text
         let customMarkerTextIcon = new L.DivIcon({
-            html: `<div style="font-family: 'OfficeMapBold', sans-serif; opacity: 0.4; text-align: center; width: 200px">You can drag and drop me for a custom location.</div>`,
+            html: `<div style="font-family: 'OfficeMap', sans-serif; font-weight: bold; opacity: 0.4; text-align: center; width: 200px">You can drag and drop me for a custom location.</div>`,
             className: '',
             iconSize: [200,36],
             iconAnchor:  [100, 0]
@@ -74,9 +74,7 @@ export class LeafletMapController {
         //this.map.addLayer(this.customMarkerInfoText)
         this.customMarker = this.markerFactory.createCustomMarker([1408,1100])
         this.makeRecreatingCustomMarker()
-        console.log(this.map)
         this.customMarker.addTo(this.map)
-        console.log("asdsa")
     }
 
     public setBackgroundImageOnce(groundfloorImageObjectUrl: string | undefined) {
@@ -156,8 +154,6 @@ export class LeafletMapController {
 
 
         // hinzufügen
-        console.log(employees)
-        console.log(this.employee_markers.size)
         if(employees && this.employee_markers.size === 0){
             let markerClusterGroup = L.markerClusterGroup({
                 maxClusterRadius: 20,

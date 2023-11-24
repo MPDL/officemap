@@ -46,3 +46,6 @@ next-env.d.ts
 /docker/production/.env
 /docker/staging/docker-compose.yml
 /docker/staging/.env
+
+# go lang build
+api/api

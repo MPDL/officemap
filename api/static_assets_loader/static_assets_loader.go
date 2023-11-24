@@ -102,6 +102,7 @@ type RoomJson struct {
 	Details   string           `json:"details"`
 	Area      float64          `json:"area"`
 	Type      string           `json:"type"`
+	Keywords  []string         `json:"keywords"`
 	Shape     []CoordinateJson `json:"shape"`
 	Marker    CoordinateJson   `json:"marker"`
 }

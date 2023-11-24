@@ -19,7 +19,7 @@ func StartHttpServer(employees []leaflet_map.Employee, rooms []leaflet_map.Room,
 
 	router := gin.Default()
 	router.GET("/search", func(c *gin.Context) {
-		search(c, endpointEmployees, endpointRooms, endpointPrinter)
+		search(c, employees, rooms, printers)
 	})
 	router.GET("/employees", func(c *gin.Context) {
 		getEmployees(c, endpointEmployees)

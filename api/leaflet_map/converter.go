@@ -7,7 +7,6 @@ import (
 func JsonRoomToLeaflet(jsonRooms static_assets_loader.RoomsJson) []Room {
 	mappedRooms := []Room{}
 
-	//RoomType(0).Type("asdas")
 	for _, roomItem := range jsonRooms.Rooms {
 		if roomItem.Marker.Lat < 0 || roomItem.Marker.Lng < 0 {
 			continue
@@ -26,6 +25,7 @@ func JsonRoomToLeaflet(jsonRooms static_assets_loader.RoomsJson) []Room {
 			Name:      roomItem.Name,
 			Details:   roomItem.Details,
 			Type:      StringRoomTypeToEnum(roomItem.Type),
+			Keywords:  roomItem.Keywords,
 			Shape: LeafletPolygon{
 				Coordinates: shapeCoordinates,
 			},

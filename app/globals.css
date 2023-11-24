@@ -1,28 +1,32 @@
-@import "style/button.css";
-@import "style/infopanel.css";
-@import "style/leaflet_overwrite.css";
-@import "style/marker.css";
-@import "style/print.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/***********************/
+/**** JS added css ****/
+/**********************/
+.officemap-hide-markers {
+  opacity: 0.4 !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/***************************/
+/**** leaflet overwrite ****/
+/***************************/
+.leaflet-control-zoom.leaflet-bar.leaflet-control{
+  margin-left: 26px;
+  margin-top: 26px;
+}
+
+/***************/
+/**** print ****/
+/***************/
+@media print {
+  body {
+    visibility: hidden;
   }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  font-family: 'OfficeMapNormal', sans-serif;
+  .officemap-print-map-section {
+    visibility: visible;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
 }

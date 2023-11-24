@@ -7,6 +7,7 @@ type Room struct {
 	Details   string
 	Area      float64
 	Type      RoomType
+	Keywords  []string
 	Shape     LeafletPolygon
 	Marker    LeafletLatLng
 }

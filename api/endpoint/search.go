@@ -1,6 +1,7 @@
 package endpoint
 
 import (
+	"api/leaflet_map"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -8,7 +9,7 @@ import (
 	"strings"
 )
 
-func search(c *gin.Context, allEmployees []employee, allRooms []room, allPrinter []printer) {
+func search(c *gin.Context, allEmployees []leaflet_map.Employee, allRooms []leaflet_map.Room, allPrinter []leaflet_map.Printer) {
 	// config variables
 	const SearchStringLimit = 40
 	const SearchKeywordLimit = 4
@@ -57,7 +58,7 @@ func search(c *gin.Context, allEmployees []employee, allRooms []room, allPrinter
 
 	matchingEmployees := allEmployees
 	for _, keyword := range limitedKeywords {
-		var employeeCandidates []employee
+		var employeeCandidates []leaflet_map.Employee
 		for _, employee := range matchingEmployees {
 			var hasFound = false
 			// TODO maybe replace contains with regex with flag i and g
@@ -87,36 +88,45 @@ func search(c *gin.Context, allEmployees []employee, allRooms []room, allPrinter
 			}
 		}
 		matchingEmployees = employeeCandidates
-		employeeCandidates = []employee{}
+		employeeCandidates = []leaflet_map.Employee{}
 	}
 	for _, employee := range matchingEmployees {
-		searchResult, priority = addSearchResultItem(employee, SearchTypeEmployee, searchResult, limitedKeywords, priority)
+		searchResult, priority = addSearchResultItem(employeeMapHelper(employee), SearchTypeEmployee, searchResult, limitedKeywords, priority)
 	}
 
 	matchingRooms := allRooms
 	for _, keyword := range limitedKeywords {
-		var roomCandidates []room
+		var roomCandidates []leaflet_map.Room
 		for _, room := range matchingRooms {
 			var hasFound = false
 			if hasFound = strings.Contains(strings.ToLower(room.Name), strings.ToLower(keyword)); hasFound {
 				roomCandidates = append(roomCandidates, room)
 				continue
 			}
-			if hasFound = strings.Contains(strings.ToLower(room.Type), strings.ToLower(keyword)); hasFound {
+			for _, roomKeyword := range room.Keywords {
+				if hasFound = strings.Contains(roomKeyword, strings.ToLower(keyword)); hasFound {
+					roomCandidates = append(roomCandidates, room)
+					break
+				}
+			}
+			if hasFound {
+				continue
+			}
+			if hasFound = strings.Contains(strings.ToLower(room.Type.String()), strings.ToLower(keyword)); hasFound {
 				roomCandidates = append(roomCandidates, room)
 				continue
 			}
 		}
 		matchingRooms = roomCandidates
-		roomCandidates = []room{}
+		roomCandidates = []leaflet_map.Room{}
 	}
 	for _, room := range matchingRooms {
-		searchResult, priority = addSearchResultItem(room, SearchTypeRoom, searchResult, limitedKeywords, priority)
+		searchResult, priority = addSearchResultItem(roomMapHelper(room), SearchTypeRoom, searchResult, limitedKeywords, priority)
 	}
 
 	matchingPrinter := allPrinter
 	for _, keyword := range limitedKeywords {
-		var printerCandidates []printer
+		var printerCandidates []leaflet_map.Printer
 		for _, printer := range matchingPrinter {
 			var hasFound = false
 			if hasFound = strings.Contains(strings.ToLower(printer.Name), strings.ToLower(keyword)); hasFound {
@@ -129,10 +139,10 @@ func search(c *gin.Context, allEmployees []employee, allRooms []room, allPrinter
 			}
 		}
 		matchingPrinter = printerCandidates
-		printerCandidates = []printer{}
+		printerCandidates = []leaflet_map.Printer{}
 	}
 	for _, printer := range matchingPrinter {
-		searchResult, priority = addSearchResultItem(printer, SearchTypePrinter, searchResult, limitedKeywords, priority)
+		searchResult, priority = addSearchResultItem(printerMapHelper(printer), SearchTypePrinter, searchResult, limitedKeywords, priority)
 	}
 
 	// send the result
