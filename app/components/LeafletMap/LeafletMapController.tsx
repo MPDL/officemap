@@ -12,15 +12,15 @@ export class LeafletMapController {
     private readonly bounds :LatLngBounds
     private readonly markerFactory: MarkerFactory
     private readonly polygonFactory: PolygonFactory
-    private readonly infoPanel: InfoPanel
+    private readonly infoPanel: InfoPanel | undefined
     private employee_markers : L.MarkerClusterGroup | undefined;
     private room_markers: L.LayerGroup | undefined;
     private printer_markers: L.LayerGroup | undefined;
     private searchMarker: L.Marker | undefined
-    private customMarker: L.Marker
+    private customMarker: L.Marker | undefined
     private customMarkerInfoText:  L.Marker | undefined
     private isBackgroundImageSet: boolean = false;
-    constructor(domNode: HTMLElement, rooms: Room[], employees: Employee[], printers: Printer[], groundfloorImageObjectUrl: string | undefined) {
+    constructor(domNode: HTMLElement, rooms: Room[], employees: Employee[], printers: Printer[], groundfloorImageObjectUrl: string | undefined, installation_mode: boolean) {
         this.map = L.map("officemap-map", {
             attributionControl: false,
             crs: L.CRS.Simple,
@@ -48,34 +48,43 @@ export class LeafletMapController {
         }
 
         // create components
-        this.infoPanel = new InfoPanel()
-        this.markerFactory = new MarkerFactory(this.infoPanel )
-        this.polygonFactory = new PolygonFactory(this.infoPanel )
+        if(!installation_mode) {
+            this.infoPanel = new InfoPanel()
+        }
+        this.markerFactory = new MarkerFactory(this.infoPanel, installation_mode)
+        this.polygonFactory = new PolygonFactory(this.infoPanel, installation_mode)
 
         // get url parameters
         let searchParameter = this.loadSearchUrlParameter()
 
         let thisMap = this
         // add info panel
-        let infoPanelControl: L.Control = new L.Control({position: 'bottomleft'});
-        infoPanelControl.onAdd = function (map) {
-            return thisMap.infoPanel.getHtml();
-        };
-        infoPanelControl.addTo(this.map);
+        if(!installation_mode && thisMap.infoPanel) {
+            let infoPanelControl: L.Control = new L.Control({position: 'bottomleft'});
+            infoPanelControl.onAdd = function (map) {
+                return thisMap.infoPanel!.getHtml();
+            };
+            infoPanelControl.addTo(this.map);
+        }
 
         // create custom marker and info text
-        let customMarkerTextIcon = new L.DivIcon({
-            html: `<div style="font-family: 'OfficeMap', sans-serif; font-weight: bold; opacity: 0.4; text-align: center; width: 200px">You can drag and drop me for a custom location.</div>`,
-            className: '',
-            iconSize: [200,36],
-            iconAnchor:  [100, 0]
-        })
-        this.customMarkerInfoText = new L.Marker([1370,1100], {icon: customMarkerTextIcon, interactive: false})
-        this.customMarkerInfoText.addTo(this.map)
-        //this.map.addLayer(this.customMarkerInfoText)
-        this.customMarker = this.markerFactory.createCustomMarker([1408,1100])
-        this.makeRecreatingCustomMarker()
-        this.customMarker.addTo(this.map)
+        if(!installation_mode) {
+            let customMarkerTextIcon = new L.DivIcon({
+                html: `<div style="font-family: 'OfficeMapBold', sans-serif; opacity: 0.4; text-align: center; width: 200px">You can drag and drop me for a custom location.</div>`,
+                className: '',
+                iconSize: [200,36],
+                iconAnchor:  [100, 0]
+            })
+            this.customMarkerInfoText = new L.Marker([1370,1100], {icon: customMarkerTextIcon, interactive: false})
+            this.customMarkerInfoText.addTo(this.map)
+            this.customMarker = this.markerFactory.createCustomMarker([1408,1100], true, 'Custom location')
+            this.makeRecreatingCustomMarker()
+            this.customMarker.addTo(this.map)
+
+        } else {
+            this.markerFactory.createCustomMarker([975, 3651], false, 'Your location').addTo(this.map)
+        }
+
     }
 
     public setBackgroundImageOnce(groundfloorImageObjectUrl: string | undefined) {
@@ -94,20 +103,22 @@ export class LeafletMapController {
     }
 
     private makeRecreatingCustomMarker(){
-        this.customMarker.on('dragend', (sd) => {
-            // TODO> only dev
-            //navigator.clipboard.writeText(`{"lat": ${this.customMarker.getLatLng().lat},"lng": ${this.customMarker.getLatLng().lng}}`)
-            let newCustomMarker = this.markerFactory.createCustomMarker([this.customMarker.getLatLng().lat, this.customMarker.getLatLng().lng])
-            this.customMarker.remove()
-            this.customMarker = newCustomMarker
-            this.makeRecreatingCustomMarker()
-            this.customMarker.addTo(this.map)
-            this.customMarkerInfoText?.remove()
-        })
-        this.customMarker.on('dragstart', (_) => {
-            // delete search marker by triggering the 'close pop up event'
-            this.searchMarker?.closePopup()
-        })
+        if(this.customMarker){
+            this.customMarker.on('dragend', (sd) => {
+                // TODO> only dev
+                //navigator.clipboard.writeText(`{"lat": ${this.customMarker.getLatLng().lat},"lng": ${this.customMarker.getLatLng().lng}}`)
+                let newCustomMarker = this.markerFactory.createCustomMarker([this.customMarker!.getLatLng().lat, this.customMarker!.getLatLng().lng], true, 'Custom location')
+                this.customMarker!.remove()
+                this.customMarker = newCustomMarker
+                this.makeRecreatingCustomMarker()
+                this.customMarker.addTo(this.map)
+                this.customMarkerInfoText?.remove()
+            })
+            this.customMarker.on('dragstart', (_) => {
+                // delete search marker by triggering the 'close pop up event'
+                this.searchMarker?.closePopup()
+            })
+        }
     }
 
     private loadSearchUrlParameter(): [MapEntityType, string] | [MapEntityType, LatLng] | undefined {

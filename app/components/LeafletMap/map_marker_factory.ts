@@ -9,10 +9,12 @@ import {Employee, Printer, Room} from "@/app/api/api";
 import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 
 export class MarkerFactory{
-    private infoPanel: InfoPanel
+    private infoPanel: InfoPanel | undefined
+    private installation_mode: boolean
 
-    constructor(infoPanel: InfoPanel) {
+    constructor(infoPanel: InfoPanel | undefined, installation_mode: boolean) {
         this.infoPanel = infoPanel
+        this.installation_mode = installation_mode
     }
     public createEmployeeMarker(employee: Employee){
         let title = employee.firstname + ' ' + employee.lastname
@@ -53,41 +55,44 @@ export class MarkerFactory{
         return marker
     }
 
-    public createCustomMarker(latlng: LatLngExpression){
+    public createCustomMarker(latlng: LatLngExpression, draggable: boolean, title: string){
         let draggingState = false;
 
         let customMarkerIcon = new CustomMarkerIcon()
         let customMarker = new L.Marker(latlng, {
             icon: customMarkerIcon.divIcon(),
-            draggable:true
+            draggable:draggable
         })
 
-        let popupContent = new PopupContent('Custom location',
+        let popupContent = new PopupContent(title,
             new Map<string, string>([['x',  customMarker.getLatLng().lng.toString()],
                 ['y',  customMarker.getLatLng().lat.toString()]]),
-            customMarkerIcon.html(),'', MapEntityType.Custom, customMarker.getLatLng().lat.toString(), customMarker.getLatLng().lng.toString())
+            customMarkerIcon.html(),'', !this.installation_mode, MapEntityType.Custom, customMarker.getLatLng().lat.toString(), customMarker.getLatLng().lng.toString())
         customMarker.bindPopup(popupContent.getHtml())
 
-        customMarker.on('mouseover', (as) =>{
-            if(!draggingState){
-                this.infoPanel.setData('Custom location', new Map<string, string>([['x',  customMarker.getLatLng().lng.toString()],
-                    ['y',  customMarker.getLatLng().lat.toString()]]), customMarkerIcon.html())
-                this.infoPanel.show(true)
-            }
-        })
-        customMarker.on('mouseout', () =>{
-            if(!draggingState){
-                this.infoPanel.show(false)
-            }
-        })
-        customMarker.on('dragstart', () => {
-            this.infoPanel.show(false)
-            draggingState = true
-        })
-        customMarker.on('dragend', () => {
-            this.infoPanel.show(false)
-            draggingState = false
-        })
+        if(this.infoPanel){
+            customMarker.on('mouseover', (as) =>{
+                if(!draggingState){
+                    this.infoPanel!.setData('Custom location', new Map<string, string>([['x',  customMarker.getLatLng().lng.toString()],
+                        ['y',  customMarker.getLatLng().lat.toString()]]), customMarkerIcon.html())
+                    this.infoPanel!.show(true)
+                }
+            })
+            customMarker.on('mouseout', () =>{
+                if(!draggingState){
+                    this.infoPanel!.show(false)
+                }
+            })
+            customMarker.on('dragstart', () => {
+                this.infoPanel!.show(false)
+                draggingState = true
+            })
+            customMarker.on('dragend', () => {
+                this.infoPanel!.show(false)
+                draggingState = false
+            })
+        }
+
 
         return customMarker
     }
@@ -99,7 +104,7 @@ export class MarkerFactory{
 
         let marker = L.marker([markerLat, markerLng],
             {icon: markerIcon.divIcon()})
-            .bindPopup(new PopupContent(popupTitle, popupDataMap, markerIcon.htmlWithoutTitle(),entityId, entityType).getHtml())
+            .bindPopup(new PopupContent(popupTitle, popupDataMap, markerIcon.htmlWithoutTitle(),entityId, !this.installation_mode, entityType).getHtml())
 
         marker.on('mouseover', () =>{
             this.infoPanel?.setData(infoPanelTitle, infoPanelDataMap, markerIcon.htmlWithoutTitle())

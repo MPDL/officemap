@@ -6,7 +6,7 @@ import {LeafletMapController} from "@/app/components/LeafletMap/LeafletMapContro
 import {FilterGroupState} from "@/app/components/PageContent/State";
 
 // followed instructions at https://react.dev/reference/react/useEffect#controlling-a-non-react-widget
-export default function LeafletMap({roomFilter, employeeFilter, printerFilter}:{roomFilter: FilterGroupState,
+export default function LeafletMap({installation_mode, roomFilter, employeeFilter, printerFilter}:{installation_mode: boolean, roomFilter: FilterGroupState,
     employeeFilter: FilterGroupState, printerFilter: FilterGroupState}) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<LeafletMapController | null>(null);
@@ -17,7 +17,7 @@ export default function LeafletMap({roomFilter, employeeFilter, printerFilter}:{
 
     useEffect(() => {
         if (mapRef.current === null && containerRef.current !== null) {
-            mapRef.current = new LeafletMapController(containerRef.current,rooms,employees,printers, groundfloorImageObjectUrl);
+            mapRef.current = new LeafletMapController(containerRef.current,rooms,employees,printers, groundfloorImageObjectUrl,installation_mode);
         }
 
         const map = mapRef.current;
@@ -30,7 +30,7 @@ export default function LeafletMap({roomFilter, employeeFilter, printerFilter}:{
             map.filterRooms(rooms, roomFilter)
             map.filterPrinter(printers, printerFilter)
         }
-    }, [rooms,employees,printers, groundfloorImageObjectUrl, employeeFilter, roomFilter, printerFilter]);
+    }, [rooms,employees,printers, groundfloorImageObjectUrl, employeeFilter, roomFilter, printerFilter, installation_mode]);
 
     return (
         <div id="officemap-map"

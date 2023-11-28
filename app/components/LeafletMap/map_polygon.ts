@@ -7,10 +7,12 @@ import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 import {ApiLeafletLatLng, Room} from "@/app/api/api";
 
 export class PolygonFactory {
-    private infoPanel: InfoPanel
+    private infoPanel: InfoPanel | undefined
+    private installation_mode: boolean
 
-    constructor(infoPanel: InfoPanel) {
+    constructor(infoPanel: InfoPanel | undefined, installation_mode: boolean) {
         this.infoPanel = infoPanel
+        this.installation_mode = installation_mode
     }
 
     public createRoomPolygon(room: Room, colorString: string){
@@ -36,20 +38,20 @@ export class PolygonFactory {
                 fillOpacity: 0.5,
                 stroke: false
             })
-                .bindPopup(new PopupContent(popupTitle, popupDataMap, markerIcon.htmlWithoutTitle(),entityId,entityType).getHtml())
+                .bindPopup(new PopupContent(popupTitle, popupDataMap, markerIcon.htmlWithoutTitle(),entityId,!this.installation_mode, entityType).getHtml())
         firstShape.on('mouseover', () =>{
             firstShape.setStyle({
                 stroke:true,
                 weight: 3,
             })
-            this.infoPanel.setData(infoPanelTitle, infoPanelDataMap, markerIcon.htmlWithoutTitle())
-            this.infoPanel.show(true)
+            this.infoPanel?.setData(infoPanelTitle, infoPanelDataMap, markerIcon.htmlWithoutTitle())
+            this.infoPanel?.show(true)
         })
         firstShape.on('mouseout', () =>{
             firstShape.setStyle({
                 stroke:false
             })
-            this.infoPanel.show(false)
+            this.infoPanel?.show(false)
         })
 
         return firstShape
