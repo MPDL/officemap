@@ -11,7 +11,9 @@ type ToggleStates = Map<string, boolean>
 export interface FilterGroupState {
   mainToggle: MainToggle,
   toggles: Map<string, boolean>,
+  colors: Map<string, string>,
   setStates: Dispatch<SetStateAction<ToggleStates>>,
+
 }
 
 export interface MainToggle {
@@ -25,10 +27,13 @@ export function useRoomFilterState (rooms: Room[]): FilterGroupState {
   const name: string = "Rooms"
   const roomTypes: Array<string> = Array.from(new Set<string>(rooms?.map(room => room.type)));
 
+  const colors: Map<string,string>= new Map();
   const toggleStates: ToggleStates = new Map();
   roomTypes.forEach(type => {
     toggleStates.set(type, true)
+    colors.set(type, color)
   })
+  colors.set(name, color)
 
   const [toggles, setStates] = useState(toggleStates)
   const [state, setState] = useState(true)
@@ -42,10 +47,13 @@ export function useEmployeeFilterState ( employees: Employee[],): FilterGroupSta
   const name: string = "Employees"
   const employeeDepartment: Array<string> = Array.from(new Set<string>(employees?.map(employee => employee.department)));
 
+  const colors: Map<string,string>= new Map();
   const toggleStates: ToggleStates = new Map();
   employeeDepartment.forEach(type => {
     toggleStates.set(type, true)
+    colors.set(type, color)
   })
+  colors.set(name, color)
 
   const [toggles, setStates] = useState(toggleStates)
   const [state, setState] = useState(true)
@@ -58,7 +66,9 @@ export function usePrinterFilterState (printers: Printer[]) {
   const color = "officemap-brown" 
   const name: string = "Printers"
 
+  const colors: Map<string,string>= new Map();
   const toggleStates: ToggleStates = new Map();
+  colors.set(name, color)
   const [toggles, setStates] = useState(toggleStates)
   const [state, setState] = useState(true)
   const mainToggle = {name, state, setState}
