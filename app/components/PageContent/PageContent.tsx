@@ -8,8 +8,6 @@ import FilterGroup from '../FilterGroup/FilterGroup'
 import {useEmployeeFilterState, useRoomFilterState, usePrinterFilterState} from './State'
 import Search from '../Search/Search'
 
-
-
 // Followed instructions at https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
 // In import('path/to/component'), the path must be explicitly written. It can't be a template string nor a variable.
 // This is needed otherwise LeafletMap will be rendered server side which does not work because leaflet relies on the
@@ -24,7 +22,6 @@ interface Props {
     printers: Printer[],
     employees: Employee[],
 }
-
 
 const PageContent = ({rooms, printers, employees}: Props) => {
     const roomFilterState = useRoomFilterState(rooms);
@@ -44,6 +41,5 @@ const PageContent = ({rooms, printers, employees}: Props) => {
     )
 }
 
-      //<DynamicLeafletMap/>
 export default PageContent
 
