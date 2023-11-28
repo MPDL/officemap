@@ -3,9 +3,11 @@
 import {useEffect, useRef} from "react";
 import {useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
 import {LeafletMapController} from "@/app/components/LeafletMap/LeafletMapController";
+import {FilterGroupState} from "@/app/components/PageContent/State";
 
 // followed instructions at https://react.dev/reference/react/useEffect#controlling-a-non-react-widget
-export default function LeafletMap() {
+export default function LeafletMap({roomFilter, employeeFilter, printerFilter}:{roomFilter: FilterGroupState,
+    employeeFilter: FilterGroupState, printerFilter: FilterGroupState}) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<LeafletMapController | null>(null);
     const { rooms, isLoading: isRoomsLoading, isError: isRoomsError } = useRooms()
@@ -19,11 +21,16 @@ export default function LeafletMap() {
         }
 
         const map = mapRef.current;
+        // will be called after every render. A render is triggered if one of the dependencies in the useEffect array is changed.
         if (map != null){
+            // cant call this in the init function because the groundfloor may not have loaded completely at that time point
             map.setBackgroundImageOnce(groundfloorImageObjectUrl)
-            map.markAllEmployees(employees)
+
+            map.filterEmployees(employees, employeeFilter)
+            map.filterRooms(rooms, roomFilter)
+            map.filterPrinter(printers, printerFilter)
         }
-    }, [rooms,employees,printers, groundfloorImageObjectUrl]);
+    }, [rooms,employees,printers, groundfloorImageObjectUrl, employeeFilter, roomFilter, printerFilter]);
 
     return (
         <div id="officemap-map"
