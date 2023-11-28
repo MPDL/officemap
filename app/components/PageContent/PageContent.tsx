@@ -33,6 +33,7 @@ const PageContent = ({rooms, printers, employees} : Props ) => {
 
   return (
     <div>
+      <DynamicLeafletMap/>
       <Filter>
         <FilterGroup state={roomFilterState}/>
         <FilterGroup state={employeeFilterState}/>

@@ -41,6 +41,15 @@ export function useGroundfloorImage() {
     }
 }
 
+export function useSearch(value: string) {
+  const {data, error, isLoading } = useSWR(`${url}/input=${value}`)
+  return {
+    results: data as SearchResultItem[],
+    isLoading,
+    isError: error
+  }
+}
+
 export interface SearchResultItem {
     type: string,
     data: string,
