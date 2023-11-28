@@ -1,23 +1,29 @@
 "use client"
 import Toggle from "@/app/components/Toggle/Toggle"
-import { ToggleState } from "../PageContent/State"
+import { FilterGroupState } from "../PageContent/State"
 
 
-interface Props {
-  main: ToggleState,
-  sub: ToggleState[],
-}
+interface ToggleMainState {
+  state: FilterGroupState
+};
 
-const ToggleMain = ({main, sub}: Props) => {
+
+const ToggleMain = ({state} : ToggleMainState) => {
+  const name = state.mainToggle.name
+
   const handleCheckboxChange = () => {
-    main.setState(!main.state)
-    sub.forEach(substate =>{
-      substate.setState(!main.state);
-    })
+    let newState = !state.mainToggle.state
+    let newStates = new Map(state.toggles)
+    state.toggles.forEach((value, key) => {
+      newStates.set(key, newState)
+    }) 
+
+    state.setStates(newStates)
+    state.mainToggle.setState(newState)
   }
 
   return (
-    <Toggle name={main.name} state={main.state} onChange={handleCheckboxChange} color={main.color}/>
+    <Toggle name={name} state={state.mainToggle.state} onChange={handleCheckboxChange} color="blue"/>
   )
 }
 

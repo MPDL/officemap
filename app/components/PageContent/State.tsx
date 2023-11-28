@@ -6,72 +6,62 @@ export interface PageState {
   searchString: string;
 }
 
+type ToggleStates = Map<string, boolean>
+
 export interface FilterGroupState {
-  mainToggle: ToggleState;
-  subToggles: ToggleState[];
+  mainToggle: MainToggle,
+  toggles: Map<string, boolean>,
+  setStates: Dispatch<SetStateAction<ToggleStates>>,
 }
 
-export interface ToggleState {
-  name: string;
-  state: boolean;
-  setState: Dispatch<SetStateAction<boolean>>;
-
-  color: string;
+export interface MainToggle {
+  name: string, 
+  state: boolean, 
+  setState: Dispatch<SetStateAction<boolean>>
 }
 
 export function useRoomFilterState (rooms: Room[]): FilterGroupState {
-  const subToggles = Array.from(
-    new Set<string>(rooms?.map((room) => room.type)),
-  ).map((type) => {
-    const [state, setState] = useState(true);
-    return { state: state, setState: setState, name: type, color: "green" };
-  });
+  const color = "officemap-blue" 
+  const name: string = "Rooms"
+  const roomTypes: Array<string> = Array.from(new Set<string>(rooms?.map(room => room.type)));
 
-  const [state, setState] = useState(true);
-  const mainToggle = {
-    state: state,
-    setState: setState,
-    name: "Rooms",
-    color: "green",
-  };
+  const toggleStates: ToggleStates = new Map();
+  roomTypes.forEach(type => {
+    toggleStates.set(type, true)
+  })
 
-  return { mainToggle, subToggles };
+  const [toggles, setStates] = useState(toggleStates)
+  const [state, setState] = useState(true)
+  const mainToggle = {name, state, setState}
+
+  return {toggles, setStates, mainToggle} as FilterGroupState;
 };
 
 export function useEmployeeFilterState ( employees: Employee[],): FilterGroupState {
-  const subToggles = Array.from(
-    new Set<string>(
-      employees?.map((employee) => employee.department),
-    ),
-  ).map((department) => {
-    const [state, setState] = useState(true);
-    return {
-      state: state,
-      setState: setState,
-      name: department,
-      color: "blue",
-    };
-  });
+  const color = "officemap-green" 
+  const name: string = "Employees"
+  const employeeDepartment: Array<string> = Array.from(new Set<string>(employees?.map(employee => employee.department)));
 
-  const [state, setState] = useState(true);
-  const mainToggle = {
-    state: state,
-    setState: setState,
-    name: "Employees",
-    color: "blue",
-  };
+  const toggleStates: ToggleStates = new Map();
+  employeeDepartment.forEach(type => {
+    toggleStates.set(type, true)
+  })
 
-  return { mainToggle, subToggles };
+  const [toggles, setStates] = useState(toggleStates)
+  const [state, setState] = useState(true)
+  const mainToggle = {name, state, setState}
+
+  return {toggles, setStates, mainToggle} as FilterGroupState;
 };
 
 export function usePrinterFilterState (printers: Printer[]) {
-  const [state, setState] = useState(true);
-  const mainToggle = {
-    state: state,
-    setState: setState,
-    name: "Printers",
-    color: "red",
-  };
+  const color = "officemap-brown" 
+  const name: string = "Printers"
 
-  return { mainToggle, subToggles: [] };
+  const toggleStates: ToggleStates = new Map();
+  const [toggles, setStates] = useState(toggleStates)
+  const [state, setState] = useState(true)
+  const mainToggle = {name, state, setState}
+
+  return {toggles, setStates, mainToggle} as FilterGroupState;
 };

@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import { Room, Employee, Printer } from '@/app/api/api'
 import FilterGroup from '../FilterGroup/FilterGroup'
 import { useEmployeeFilterState, useRoomFilterState, usePrinterFilterState } from './State'
+import Search from '../Search/Search'
 
 
 
@@ -29,7 +30,6 @@ const PageContent = ({rooms, printers, employees} : Props ) => {
   const roomFilterState = useRoomFilterState(rooms);
   const employeeFilterState = useEmployeeFilterState(employees);
   const printerFilterState = usePrinterFilterState(printers);
-  console.log(rooms)
 
   return (
     <div>
@@ -38,10 +38,11 @@ const PageContent = ({rooms, printers, employees} : Props ) => {
         <FilterGroup state={employeeFilterState}/>
         <FilterGroup state={printerFilterState}/>
       </Filter>
-      <DynamicLeafletMap/>
+      <Search/>
     </div>
   )
 }
 
+      //<DynamicLeafletMap/>
 export default PageContent
 

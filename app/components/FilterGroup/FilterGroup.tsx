@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { FilterGroupState, ToggleState } from '../PageContent/State';
+import { FilterGroupState } from '../PageContent/State';
 import ToggleSub from '../ToggleSub/ToggleSub';
 import ToggleMain from '../ToggleMain/ToggleMain';
 
@@ -12,11 +12,13 @@ const FilterGroup = ({state} : Props) => {
 
   return (
     <div className='flex flex-col mt-2'>
-      <ToggleMain main={state.mainToggle} sub={state.subToggles}/>
+        <ToggleMain state={state}/>
       <div className='ml-6'>
-        {state.subToggles.map(({name, state, setState, color} : ToggleState) => {
-          return <ToggleSub key={name} name={name} state={state} setState={setState} color={color}/>
-        })}
+        {
+          Array.from(state.toggles.keys()).map(key => {
+            return <ToggleSub key={key} name={key} state={state}/>
+          })
+        }
       </div>
     </div>
   )

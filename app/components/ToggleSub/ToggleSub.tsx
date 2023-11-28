@@ -1,21 +1,25 @@
 "use client"
 import Toggle from '@/app/components/Toggle/Toggle'
 import React, { Dispatch, SetStateAction } from 'react'
-import { ToggleState } from '../PageContent/State'
+import { FilterGroupState } from '../PageContent/State'
 
 export interface ToggleSubState {
   name : string,
-  state: boolean,
-  setState : Dispatch<SetStateAction<boolean>>,
+  state: FilterGroupState
 };
 
-const ToggleSub = ({name, state, setState, color} : ToggleState) => {
+
+const ToggleSub = ({name, state} : ToggleSubState) => {
   const handleCheckboxChange = () => {
-    setState(!state)
+    let newState = !state.toggles.get(name)
+    let newStates = new Map(state.toggles)
+    newStates.set(name, newState)
+
+    state.setStates(newStates)
   }
 
   return (
-    <Toggle name={name} state={state} onChange={handleCheckboxChange} color={color}/>
+    <Toggle name={name} state={state.toggles.get(name) || false} onChange={handleCheckboxChange} color="blue"/>
   )
 }
 
