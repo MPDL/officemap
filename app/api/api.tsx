@@ -41,13 +41,17 @@ export function useGroundfloorImage() {
     }
 }
 
-export function useSearch(value: string) {
-  const {data, error, isLoading } = useSWR(`${url}/input=${value}`)
+export function useSearch(query: string) {
+  const {data, error, isLoading } = useSWR(`${url}/search?input=${query}`)
   return {
     results: data as SearchResultItem[],
     isLoading,
     isError: error
   }
+}
+
+export async function fetchSearch(query: string) : Promise<SearchResultItem[]> {
+      return await fetch(`${url}/search?input=${query}`).then(res => res.json()) as SearchResultItem[]
 }
 
 export interface SearchResultItem {
