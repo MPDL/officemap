@@ -5,6 +5,7 @@ import {MarkerFactory} from "@/app/components/LeafletMap/map_marker_factory";
 import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
 import {PolygonFactory} from "@/app/components/LeafletMap/map_polygon";
 import 'leaflet.markercluster/dist/leaflet.markercluster.js'
+import {FilterGroupState} from "@/app/components/PageContent/State";
 
 export class LeafletMapController {
     private readonly map: L.Map
@@ -12,7 +13,9 @@ export class LeafletMapController {
     private readonly markerFactory: MarkerFactory
     private readonly polygonFactory: PolygonFactory
     private readonly infoPanel: InfoPanel
-    private employee_markers : Map<string, L.MarkerClusterGroup>;
+    private employee_markers : L.MarkerClusterGroup | undefined;
+    private room_markers: L.LayerGroup | undefined;
+    private printer_markers: L.LayerGroup | undefined;
     private searchMarker: L.Marker | undefined
     private customMarker: L.Marker
     private customMarkerInfoText:  L.Marker | undefined
@@ -35,8 +38,6 @@ export class LeafletMapController {
         }
         this.map.fitBounds(this.bounds);
 
-        // create marker containers
-        this.employee_markers = new Map<string, L.MarkerClusterGroup>()
         // mark employees
 
 
@@ -149,33 +150,31 @@ export class LeafletMapController {
         return undefined
     }
 
-    public markAllEmployees(employees: Employee[]){
-        // alle marker entfernen
+    public filterEmployees(employees: Employee[], employeeFilter: FilterGroupState){
+        this.employee_markers?.removeFrom(this.map)
+        this.employee_markers = L.markerClusterGroup({
+            maxClusterRadius: 20,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: false
+        });
+        this.map.addLayer(this.employee_markers)
+        employees.filter(employee => employeeFilter.toggles.get(employee.department)).forEach(
+            employee => this.employee_markers?.addLayer(this.markerFactory.createEmployeeMarker(employee)))
+    }
 
+    public filterRooms(rooms: Room[], roomFilter: FilterGroupState){
+        this.room_markers?.removeFrom(this.map)
+        this.room_markers = L.layerGroup()
+        this.map.addLayer(this.room_markers)
+        rooms.filter(room => roomFilter.toggles.get(room.type)).forEach(
+            room => this.room_markers?.addLayer(this.polygonFactory.createRoomPolygon(room, "hsl(146, 50%, 40%)")))
+    }
 
-        // hinzufügen
-        if(employees && this.employee_markers.size === 0){
-            let markerClusterGroup = L.markerClusterGroup({
-                maxClusterRadius: 20,
-                showCoverageOnHover: false,
-                zoomToBoundsOnClick: false
-            });
-            for (const employee of employees) {
-                let department = this.employee_markers.get(employee.department)
-                let marker = this.markerFactory.createEmployeeMarker(employee)
-
-
-                if(department === undefined) {
-                    markerClusterGroup.addLayer(marker)
-                    this.employee_markers.set(employee.department, markerClusterGroup)
-                } else {
-                    department.addLayer(marker)
-                }
-            }
-
-            for (let [_, value] of this.employee_markers) {
-                this.map.addLayer(value);
-            }
-        }
+    public filterPrinter(printers: Printer[], printerFilter: FilterGroupState){
+        this.printer_markers?.removeFrom(this.map)
+        this.printer_markers = L.layerGroup()
+        this.map.addLayer(this.printer_markers)
+        printers.filter(printer => printerFilter.mainToggle.state).forEach(
+            printer => this.printer_markers?.addLayer(this.markerFactory.createPrinterMarker(printer)))
     }
 }
