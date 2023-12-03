@@ -21,7 +21,7 @@ export class PolygonFactory {
             ['Details', room.details],
         ])
         let polygon = this.createCategoryPolygon(room.shape.coordinates, room.name,room.name,room.name, dataMap, dataMap,
-            colorString, MarkerIconRoom.src, 'meeting_room', room.id.toString(),MapEntityType.Room)
+            colorString, MarkerIconRoom.src, 'meeting_room', room.stringId,MapEntityType.Room)
 
         return polygon
     }

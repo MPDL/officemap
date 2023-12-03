@@ -10,7 +10,7 @@ func MapPrintersToRoom(jsonPrinters static_assets_loader.PrintersJson, rooms []R
 
 	for _, printerItem := range jsonPrinters.Printers {
 		for _, roomItem := range rooms {
-			if strings.Contains(printerItem.Room, roomItem.LiteralId) {
+			if strings.Contains(printerItem.Room, roomItem.StringId) {
 				leafletPrinters = append(leafletPrinters, Printer{
 					Id:     printerItem.Id,
 					Name:   printerItem.Name,

@@ -25,7 +25,7 @@ export class MarkerFactory{
         ]);
 
         let marker = this.createCategoryMarker(title,title,dataMap,title,dataMap,employee.marker.lat,
-            employee.marker.lng,MarkerIconEmployee.src, 'person', employee.id.toString(), MapEntityType.Employee)
+            employee.marker.lng,MarkerIconEmployee.src, 'person', employee.stringId, MapEntityType.Employee)
 
         return marker
     }
@@ -38,7 +38,7 @@ export class MarkerFactory{
         ])
 
         let marker = this.createCategoryMarker(title,title,dataMap,title,dataMap,room.marker.lat,
-            room.marker.lng,MarkerIconRoom.src, 'meeting_room', room.id.toString(), MapEntityType.Room)
+            room.marker.lng,MarkerIconRoom.src, 'meeting_room', room.stringId, MapEntityType.Room)
 
         return marker
     }

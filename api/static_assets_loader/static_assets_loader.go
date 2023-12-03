@@ -96,15 +96,15 @@ type RoomsJson struct {
 }
 
 type RoomJson struct {
-	Id        int              `json:"id"`
-	LiteralId string           `json:"literal_id"`
-	Name      string           `json:"name"`
-	Details   string           `json:"details"`
-	Area      float64          `json:"area"`
-	Type      string           `json:"type"`
-	Keywords  []string         `json:"keywords"`
-	Shape     []CoordinateJson `json:"shape"`
-	Marker    CoordinateJson   `json:"marker"`
+	Id       int              `json:"id"`
+	StringId string           `json:"string_id"`
+	Name     string           `json:"name"`
+	Details  string           `json:"details"`
+	Area     float64          `json:"area"`
+	Type     string           `json:"type"`
+	Keywords []string         `json:"keywords"`
+	Shape    []CoordinateJson `json:"shape"`
+	Marker   CoordinateJson   `json:"marker"`
 }
 
 type CoordinateJson struct {

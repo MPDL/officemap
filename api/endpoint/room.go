@@ -2,10 +2,8 @@ package endpoint
 
 import (
 	"api/leaflet_map"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 func getRooms(c *gin.Context, rooms []room) {
@@ -15,39 +13,28 @@ func getRooms(c *gin.Context, rooms []room) {
 	c.IndentedJSON(http.StatusOK, rooms)
 }
 
-func getRoom(c *gin.Context, rooms map[int]room, id string) {
+func getRoom(c *gin.Context, rooms map[string]room, stringId string) {
 	// TODO only dev
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-
-	idNumeric, err := strconv.Atoi(id)
-	if err != nil {
-		c.IndentedJSON(http.StatusOK, nil)
-		fmt.Println(err.Error())
-		return
-	}
-
-	if idNumeric < 0 || idNumeric >= len(rooms) {
-		c.IndentedJSON(http.StatusOK, nil)
-		return
-	}
-
-	c.IndentedJSON(http.StatusOK, rooms[idNumeric])
+	c.IndentedJSON(http.StatusOK, rooms[stringId])
 }
 
-func mapLeafletRoomToEndpointRoomMap(leafletRooms []leaflet_map.Room) map[int]room {
-	endpointRooms := map[int]room{}
+func mapLeafletRoomToEndpointRoomMap(leafletRooms []leaflet_map.Room) map[string]room {
+	endpointRooms := map[string]room{}
 	for _, leafletRoom := range leafletRooms {
-		endpointRooms[leafletRoom.Id] = roomMapHelper(leafletRoom)
+		endpointRooms[leafletRoom.StringId] = roomMapHelper(leafletRoom)
 	}
 	return endpointRooms
 }
 
 func roomMapHelper(leafletRoom leaflet_map.Room) room {
 	return room{
-		Name:    leafletRoom.Name,
-		Details: leafletRoom.Details,
-		Type:    leafletRoom.Type.String(),
-		Shape:   mapLeafletPolygonToEndpointPolygon(leafletRoom.Shape),
+		Id:       leafletRoom.Id,
+		StringId: leafletRoom.StringId,
+		Name:     leafletRoom.Name,
+		Details:  leafletRoom.Details,
+		Type:     leafletRoom.Type.String(),
+		Shape:    mapLeafletPolygonToEndpointPolygon(leafletRoom.Shape),
 		Marker: leafletLatLng{
 			Lat: leafletRoom.Marker.Lat,
 			Lng: leafletRoom.Marker.Lng,
@@ -79,10 +66,11 @@ func mapLeafletPolygonToEndpointPolygon(lfPolygon leaflet_map.LeafletPolygon) le
 }
 
 type room struct {
-	Id      int            `json:"id"`
-	Name    string         `json:"name"`
-	Details string         `json:"details"`
-	Type    string         `json:"type"`
-	Shape   leafletPolygon `json:"shape"`
-	Marker  leafletLatLng  `json:"marker"`
+	Id       int            `json:"id"`
+	StringId string         `json:"stringId"`
+	Name     string         `json:"name"`
+	Details  string         `json:"details"`
+	Type     string         `json:"type"`
+	Shape    leafletPolygon `json:"shape"`
+	Marker   leafletLatLng  `json:"marker"`
 }

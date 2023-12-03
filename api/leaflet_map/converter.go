@@ -20,12 +20,12 @@ func JsonRoomToLeaflet(jsonRooms static_assets_loader.RoomsJson) []Room {
 			})
 		}
 		mappedRooms = append(mappedRooms, Room{
-			Id:        roomItem.Id,
-			LiteralId: roomItem.LiteralId,
-			Name:      roomItem.Name,
-			Details:   roomItem.Details,
-			Type:      StringRoomTypeToEnum(roomItem.Type),
-			Keywords:  roomItem.Keywords,
+			Id:       roomItem.Id,
+			StringId: roomItem.StringId,
+			Name:     roomItem.Name,
+			Details:  roomItem.Details,
+			Type:     StringRoomTypeToEnum(roomItem.Type),
+			Keywords: roomItem.Keywords,
 			Shape: LeafletPolygon{
 				Coordinates: shapeCoordinates,
 			},

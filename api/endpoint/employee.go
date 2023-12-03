@@ -2,10 +2,8 @@ package endpoint
 
 import (
 	"api/leaflet_map"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 func getEmployees(c *gin.Context, employees []employee) {
@@ -15,23 +13,10 @@ func getEmployees(c *gin.Context, employees []employee) {
 	c.IndentedJSON(http.StatusOK, employees)
 }
 
-func getEmployee(c *gin.Context, employees map[int]employee, id string) {
+func getEmployee(c *gin.Context, employees map[string]employee, stringId string) {
 	// TODO only dev
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-
-	idNumeric, err := strconv.Atoi(id)
-	if err != nil {
-		c.IndentedJSON(http.StatusOK, nil)
-		fmt.Println(err.Error())
-		return
-	}
-
-	if idNumeric < 0 || idNumeric >= len(employees) {
-		c.IndentedJSON(http.StatusOK, nil)
-		return
-	}
-
-	c.IndentedJSON(http.StatusOK, employees[idNumeric])
+	c.IndentedJSON(http.StatusOK, employees[stringId])
 }
 
 func mapLeafletEmployeeToEndpointEmployee(leafletEmployees []leaflet_map.Employee) []employee {
@@ -42,10 +27,10 @@ func mapLeafletEmployeeToEndpointEmployee(leafletEmployees []leaflet_map.Employe
 	return endpointEmployees
 }
 
-func mapLeafletEmployeeToEndpointEmployeeMap(leafletEmployees []leaflet_map.Employee) map[int]employee {
-	endpointEmployees := map[int]employee{}
+func mapLeafletEmployeeToEndpointEmployeeMap(leafletEmployees []leaflet_map.Employee) map[string]employee {
+	endpointEmployees := map[string]employee{}
 	for _, leafletEmployee := range leafletEmployees {
-		endpointEmployees[leafletEmployee.Id] = employeeMapHelper(leafletEmployee)
+		endpointEmployees[leafletEmployee.StringId] = employeeMapHelper(leafletEmployee)
 	}
 	return endpointEmployees
 }
@@ -53,6 +38,7 @@ func mapLeafletEmployeeToEndpointEmployeeMap(leafletEmployees []leaflet_map.Empl
 func employeeMapHelper(leafletEmployee leaflet_map.Employee) employee {
 	return employee{
 		Id:         leafletEmployee.Id,
+		StringId:   leafletEmployee.StringId,
 		Firstname:  leafletEmployee.Firstname,
 		Lastname:   leafletEmployee.Lastname,
 		Department: leafletEmployee.Department,
@@ -68,6 +54,7 @@ func employeeMapHelper(leafletEmployee leaflet_map.Employee) employee {
 
 type employee struct {
 	Id         int           `json:"id"`
+	StringId   string        `json:"stringId"`
 	Firstname  string        `json:"firstname"`
 	Lastname   string        `json:"lastname"`
 	Department string        `json:"department"`

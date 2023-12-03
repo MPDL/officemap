@@ -127,22 +127,20 @@ export class LeafletMapController {
         let url_search_parameters = browser_url.searchParams
 
         let mapEntityType: MapEntityType | undefined;
-        let id: number | undefined;
         if(url_search_parameters.has("employee")){
             mapEntityType = MapEntityType.Employee
-            id = Number(url_search_parameters.get("employee"))
-            return [mapEntityType, id.toString()]
+            return [mapEntityType, url_search_parameters.get("employee") ?? ""]
         }
 
         if(url_search_parameters.has("room")){
             mapEntityType = MapEntityType.Room
-            id = Number(url_search_parameters.get("room"))
-            return [mapEntityType, id.toString()]
+
+            return [mapEntityType, url_search_parameters.get("room") ?? ""]
         }
 
         if(url_search_parameters.has("printer")){
             mapEntityType = MapEntityType.Printer
-            id = Number(url_search_parameters.get("printer"))
+            let id = Number(url_search_parameters.get("printer"))
             return [mapEntityType, id.toString()]
         }
 
@@ -159,6 +157,58 @@ export class LeafletMapController {
         }
 
         return undefined
+    }
+
+    public markEntityOnMap(object: Employee | Room | Printer| LatLng, mapEntityType: MapEntityType){
+        // if there was a previous search marker then delete it by triggering the 'close pop up' event
+        if(this.searchMarker !== undefined){
+            this.searchMarker.closePopup()
+        }
+
+        let markers = document.getElementsByClassName("leaflet-marker-icon");
+        for (let i = 0; i <markers.length; i++) {
+            let marker = markers.item(i)
+            marker?.classList.add("officemap-hide-markers")
+        }
+
+        switch (mapEntityType) {
+            case MapEntityType.Employee:
+                let employee = object as Employee
+                this.searchMarker = this.markerFactory.createEmployeeMarker(employee)
+                this.searchMarker?.addTo(this.map)
+                this.searchMarker?.openPopup()
+                break;
+            case MapEntityType.Room:
+                let room = object as Room
+                this.searchMarker = this.markerFactory.createRoomMarker(room)
+                this.searchMarker?.addTo(this.map)
+                this.searchMarker?.openPopup()
+                break;
+            case MapEntityType.Printer:
+                let printer = object as Printer
+                this.searchMarker = this.markerFactory.createPrinterMarker(printer)
+                this.searchMarker?.addTo(this.map)
+                this.searchMarker?.openPopup()
+                break;
+            case MapEntityType.Custom:
+                let latlng = object as LatLng
+                this.searchMarker = this.markerFactory.createCustomMarker(latlng, false, 'Custom location')
+                this.searchMarker?.addTo(this.map)
+                this.searchMarker?.openPopup()
+                break;
+        }
+
+        if(this.searchMarker !== undefined){
+            this.searchMarker.on('popupclose', () => {
+                let markers = document.getElementsByClassName("officemap-hide-markers");
+                while (markers.length) {
+                    markers[0].classList.remove("officemap-hide-markers")
+                }
+
+                this.searchMarker?.remove()
+                this.searchMarker = undefined
+            })
+        }
     }
 
     public filterEmployees(employees: Employee[], employeeFilter: FilterGroupState){

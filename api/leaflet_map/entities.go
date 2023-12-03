@@ -1,19 +1,20 @@
 package leaflet_map
 
 type Room struct {
-	Id        int
-	LiteralId string
-	Name      string
-	Details   string
-	Area      float64
-	Type      RoomType
-	Keywords  []string
-	Shape     LeafletPolygon
-	Marker    LeafletLatLng
+	Id       int
+	StringId string
+	Name     string
+	Details  string
+	Area     float64
+	Type     RoomType
+	Keywords []string
+	Shape    LeafletPolygon
+	Marker   LeafletLatLng
 }
 
 type Employee struct {
 	Id          int
+	StringId    string
 	Firstname   string
 	Lastname    string
 	Department  string

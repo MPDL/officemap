@@ -14,6 +14,15 @@ export function useEmployees() {
     }
 }
 
+export function useEmployee(stringId: string) {
+    const { data, error, isLoading } = useSWR(`${url}/employee/${stringId}`, fetcher)
+    return {
+        employee: data as Employee,
+        isLoading,
+        isError: error
+    }
+}
+
 export function useRooms() {
     const { data, error, isLoading } = useSWR(`${url}/rooms`, fetcher)
     return {
@@ -23,10 +32,28 @@ export function useRooms() {
     }
 }
 
+export function useRoom(stringId: string) {
+    const { data, error, isLoading } = useSWR(`${url}/room/${stringId}`, fetcher)
+    return {
+        room: data as Room,
+        isLoading,
+        isError: error
+    }
+}
+
 export function usePrinters() {
     const { data, error, isLoading } = useSWR(`${url}/printers`, fetcher)
     return {
         printers: data as Printer[],
+        isLoading,
+        isError: error
+    }
+}
+
+export function usePrinter(stringId: string) {
+    const { data, error, isLoading } = useSWR(`${url}/printer/${stringId}`, fetcher)
+    return {
+        printer: data as Printer,
         isLoading,
         isError: error
     }
@@ -63,6 +90,7 @@ export interface SearchResultItem {
 
 export interface Employee {
     id: number,
+    stringId: string,
     firstname: string,
     lastname: string,
     department: string,
@@ -74,6 +102,7 @@ export interface Employee {
 
 export interface Room {
     id: number,
+    stringId: string,
     name: string,
     details: string,
     type: string,
