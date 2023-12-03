@@ -17,6 +17,7 @@ export class PolygonFactory {
 
     public createRoomPolygon(room: Room, colorString: string){
         let dataMap = new Map<string,string>([
+            ['Identifier', room.stringId],
             ['Type', room.type],
             ['Details', room.details],
         ])
