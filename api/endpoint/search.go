@@ -103,6 +103,10 @@ func search(c *gin.Context, allEmployees []leaflet_map.Employee, allRooms []leaf
 				roomCandidates = append(roomCandidates, room)
 				continue
 			}
+			if hasFound = strings.Contains(strings.ToLower(room.StringId), strings.ToLower(keyword)); hasFound {
+				roomCandidates = append(roomCandidates, room)
+				continue
+			}
 			for _, roomKeyword := range room.Keywords {
 				if hasFound = strings.Contains(roomKeyword, strings.ToLower(keyword)); hasFound {
 					roomCandidates = append(roomCandidates, room)
