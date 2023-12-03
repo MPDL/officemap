@@ -38,9 +38,6 @@ export class LeafletMapController {
         }
         this.map.fitBounds(this.bounds);
 
-        // mark employees
-
-
         // modify leaflet html for print feature
         let leaflet_mapview = document.getElementsByClassName('leaflet-pane leaflet-map-pane')
         if(leaflet_mapview.length === 1) {
@@ -53,9 +50,6 @@ export class LeafletMapController {
         }
         this.markerFactory = new MarkerFactory(this.infoPanel, installation_mode)
         this.polygonFactory = new PolygonFactory(this.infoPanel, installation_mode)
-
-        // get url parameters
-        let searchParameter = this.loadSearchUrlParameter()
 
         let thisMap = this
         // add info panel
@@ -121,93 +115,65 @@ export class LeafletMapController {
         }
     }
 
-    private loadSearchUrlParameter(): [MapEntityType, string] | [MapEntityType, LatLng] | undefined {
-        // get URL search parameters
-        let browser_url = new URL(window.location.href);
-        let url_search_parameters = browser_url.searchParams
-
-        let mapEntityType: MapEntityType | undefined;
-        if(url_search_parameters.has("employee")){
-            mapEntityType = MapEntityType.Employee
-            return [mapEntityType, url_search_parameters.get("employee") ?? ""]
+    public markEntityOnMap(employee: Employee, room: Room, printer: Printer, custom: LatLng | undefined,
+                           setUrlSearchParameter: (employee: Employee | null, room: Room | null, printer: Printer | null, custom: LatLng | undefined) => void){
+        if(!employee && !room && !printer && !custom){
+            return;
         }
 
-        if(url_search_parameters.has("room")){
-            mapEntityType = MapEntityType.Room
-
-            return [mapEntityType, url_search_parameters.get("room") ?? ""]
-        }
-
-        if(url_search_parameters.has("printer")){
-            mapEntityType = MapEntityType.Printer
-            let id = Number(url_search_parameters.get("printer"))
-            return [mapEntityType, id.toString()]
-        }
-
-        if(url_search_parameters.has("custom")){
-            mapEntityType = MapEntityType.Custom
-            let latlng = url_search_parameters.get("custom")?.split(',')
-            if(latlng !== undefined && latlng.length === 2){
-                let convertedLat = Number(latlng[0])
-                let convertedLng = Number(latlng[1])
-                if(!isNaN(convertedLat) && !isNaN(convertedLng)) {
-                    return [mapEntityType, new LatLng(convertedLat,convertedLng)]
-                }
-            }
-        }
-
-        return undefined
-    }
-
-    public markEntityOnMap(object: Employee | Room | Printer| LatLng, mapEntityType: MapEntityType){
         // if there was a previous search marker then delete it by triggering the 'close pop up' event
         if(this.searchMarker !== undefined){
             this.searchMarker.closePopup()
         }
-
+        setUrlSearchParameter(employee, room, printer, custom)
         let markers = document.getElementsByClassName("leaflet-marker-icon");
         for (let i = 0; i <markers.length; i++) {
             let marker = markers.item(i)
             marker?.classList.add("officemap-hide-markers")
         }
 
-        switch (mapEntityType) {
-            case MapEntityType.Employee:
-                let employee = object as Employee
-                this.searchMarker = this.markerFactory.createEmployeeMarker(employee)
-                this.searchMarker?.addTo(this.map)
-                this.searchMarker?.openPopup()
-                break;
-            case MapEntityType.Room:
-                let room = object as Room
-                this.searchMarker = this.markerFactory.createRoomMarker(room)
-                this.searchMarker?.addTo(this.map)
-                this.searchMarker?.openPopup()
-                break;
-            case MapEntityType.Printer:
-                let printer = object as Printer
-                this.searchMarker = this.markerFactory.createPrinterMarker(printer)
-                this.searchMarker?.addTo(this.map)
-                this.searchMarker?.openPopup()
-                break;
-            case MapEntityType.Custom:
-                let latlng = object as LatLng
-                this.searchMarker = this.markerFactory.createCustomMarker(latlng, false, 'Custom location')
-                this.searchMarker?.addTo(this.map)
-                this.searchMarker?.openPopup()
-                break;
+        const registerPopUp = () => {
+            if(this.searchMarker !== undefined){
+                this.searchMarker.on('popupclose', () => {
+                    let markers = document.getElementsByClassName("officemap-hide-markers");
+                    while (markers.length) {
+                        markers[0].classList.remove("officemap-hide-markers")
+                    }
+
+                    this.searchMarker?.remove()
+                    this.searchMarker = undefined
+                    setUrlSearchParameter(null, null, null, undefined)
+                })
+            }
         }
 
-        if(this.searchMarker !== undefined){
-            this.searchMarker.on('popupclose', () => {
-                let markers = document.getElementsByClassName("officemap-hide-markers");
-                while (markers.length) {
-                    markers[0].classList.remove("officemap-hide-markers")
-                }
-
-                this.searchMarker?.remove()
-                this.searchMarker = undefined
-            })
+        if(employee){
+            this.searchMarker = this.markerFactory.createEmployeeMarker(employee)
+            this.searchMarker?.addTo(this.map)
+            this.searchMarker?.openPopup()
+            registerPopUp()
+            return
+        }
+        if(room){
+            this.searchMarker = this.markerFactory.createRoomMarker(room)
+            this.searchMarker?.addTo(this.map)
+            this.searchMarker?.openPopup()
+            registerPopUp()
+            return
+        }
+        if(printer){
+            this.searchMarker = this.markerFactory.createPrinterMarker(printer)
+            this.searchMarker?.addTo(this.map)
+            this.searchMarker?.openPopup()
+            registerPopUp()
+            return
+        }
+        if(custom){
+            this.searchMarker = this.markerFactory.createCustomMarker(custom, false, 'Custom location')
+            this.searchMarker?.addTo(this.map)
+            this.searchMarker?.openPopup()
+            registerPopUp()
+            return
         }
     }
 

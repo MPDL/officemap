@@ -1,13 +1,19 @@
-"use client"
-
 import {useEffect, useRef} from "react";
-import {useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
+import {Employee, Printer, Room, useEmployees, useGroundfloorImage, usePrinters, useRooms} from "@/app/api/api";
 import {LeafletMapController} from "@/app/components/LeafletMap/LeafletMapController";
 import {FilterGroupState} from "@/app/components/PageContent/State";
+import {MapEntityType} from "@/app/components/LeafletMap/map_entity";
+import {LatLng} from "leaflet";
 
 // followed instructions at https://react.dev/reference/react/useEffect#controlling-a-non-react-widget
-export default function LeafletMap({installation_mode, roomFilter, employeeFilter, printerFilter}:{installation_mode: boolean, roomFilter: FilterGroupState,
-    employeeFilter: FilterGroupState, printerFilter: FilterGroupState}) {
+export default function LeafletMap({installation_mode, roomFilter, employeeFilter, printerFilter,
+                                       employeeSearchEntity, roomSearchEntity, printerSearchEntity, customSearchEntity,
+                                       setUrlSearchParameter}:
+                                       {installation_mode: boolean, roomFilter: FilterGroupState,
+                                           employeeFilter: FilterGroupState, printerFilter: FilterGroupState,
+                                           employeeSearchEntity: any, roomSearchEntity: any, printerSearchEntity: any,
+                                           customSearchEntity: LatLng | undefined,
+                                           setUrlSearchParameter: (employee: Employee | null, room: Room | null, printer: Printer | null, custom: LatLng | undefined) => void}) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<LeafletMapController | null>(null);
     const { rooms, isLoading: isRoomsLoading, isError: isRoomsError } = useRooms()
@@ -29,6 +35,9 @@ export default function LeafletMap({installation_mode, roomFilter, employeeFilte
             map.filterEmployees(employees, employeeFilter)
             map.filterRooms(rooms, roomFilter)
             map.filterPrinter(printers, printerFilter)
+
+            map.markEntityOnMap(employeeSearchEntity?.employee, roomSearchEntity?.room, printerSearchEntity?.printer,
+                customSearchEntity, setUrlSearchParameter)
         }
     }, [rooms,employees,printers, groundfloorImageObjectUrl, employeeFilter, roomFilter, printerFilter, installation_mode]);
 
