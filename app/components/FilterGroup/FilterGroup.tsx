@@ -12,8 +12,10 @@ const FilterGroup = ({state} : Props) => {
 
   return (
     <div className='flex flex-col mt-2'>
+			<div className='font-semibold text-medium'>
         <ToggleMain state={state}/>
-      <div className='ml-6'>
+			</div>
+      <div className='ml-6 text-sm'>
         {
           Array.from(state.toggles.keys()).map(key => {
             return <ToggleSub key={key} name={key} state={state}/>

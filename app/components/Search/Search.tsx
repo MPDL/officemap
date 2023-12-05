@@ -8,17 +8,25 @@ const Search = () => {
     const [query, setQuery] = useState<string>("")
 
     return (
-        <div className='flex absolute top-5 shadow-xl rounded-3xl p-4'>
+        <div className='flex flex-col left-1/2  transform -translate-x-1/2  w-1/2 absolute top-5 shadow-xl rounded-3xl bg-white divide-y'>
+					<div className='flex flex-row m-4'>
+						<svg className="mr-2 h-5 w-5 text-gray-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  
+							<path stroke="none" d="M0 0h24v24H0z"/>  
+							<circle cx="10" cy="10" r="7" />  
+							<line x1="21" y1="21" x2="15" y2="15" />
+						</svg>
             <input
                 className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
                 type="text"
                 id="search"
                 value={query}
                 onChange={(e) => {setQuery(e.target.value)}}
+								autoComplete="off"
                 placeholder="Search for employees, rooms, printers ..." /> 
-            <Suspense fallback={<h2>Loading...</h2>}>
-                <LoadSearchResults query={query}/>
-            </Suspense>
+					</div>
+					<Suspense fallback={<></>}>
+							<LoadSearchResults query={query}/>
+					</Suspense>
         </div>
     )
 }

@@ -106,14 +106,14 @@ const PageContent = ({rooms, printers, employees}: Props) => {
             ): (
                 <></>
             )}
-            <DynamicLeafletMap installation_mode={installation_mode} roomFilter={roomFilterState}
-                               employeeFilter={employeeFilterState} printerFilter={printerFilterState}
-                               employeeSearchEntity={employeeSearchEntity} roomSearchEntity={roomSearchEntity}
-                               printerSearchEntity={printerSearchEntity} customSearchEntity={customSearchEntity}
-                               setUrlSearchParameter={setUrlSearchParameter}/>
         </div>
     )
 }
+						// <DynamicLeafletMap installation_mode={installation_mode} roomFilter={roomFilterState}
+      //                          employeeFilter={employeeFilterState} printerFilter={printerFilterState}
+      //                          employeeSearchEntity={employeeSearchEntity} roomSearchEntity={roomSearchEntity}
+      //                          printerSearchEntity={printerSearchEntity} customSearchEntity={customSearchEntity}
+      //                          setUrlSearchParameter={setUrlSearchParameter}/>
 
 export default PageContent
 
