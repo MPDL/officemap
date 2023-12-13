@@ -17,8 +17,8 @@ const SearchResults = ({query} : Props) => {
             { 
                 results.sort((n1, n2) => n1.priority - n2.priority)
 								.slice(0, 10)
-								.map((entry)  => {
-                    return <SearchResult entry={entry}/>
+								.map((entry, key)  => {
+                    return <SearchResult key={key} entry={entry}/>
                 })}
 						{
 							results.length > 10 ? (

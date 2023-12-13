@@ -32,6 +32,13 @@
 }
 
 @font-face {
-	font-family: "material";
-	src: url("../materialFonts.woff2");
+	font-family: "SymbolFont";
+	src: url("/fonts/materialFonts.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+	font-feature-settings: 'liga';
+}
+
+.symbol {
+	font-family: 'SymbolFont', sans-serif;
 }

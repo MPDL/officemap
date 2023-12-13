@@ -9,7 +9,7 @@ const SearchResult = ({entry} : Props) => {
 
 	const renderResult = (type: string, name: string, tag: string) => {
 		return (<div className='py-1 flex flex-row'>
-			<div className="mr-2 text-gray-500">
+			<div className="mr-2 text-gray-500 symbol">
 				{type}
 			</div>
 			{name}
@@ -26,7 +26,7 @@ const SearchResult = ({entry} : Props) => {
 		}
 		else if(entry.type == "room") {
 			const room = JSON.parse(entry.data) as Room;
-			return renderResult("room", room.name, room.type)
+			return renderResult("meeting_room", room.name, room.type)
 		}
 		else {
 			return (<></>)
