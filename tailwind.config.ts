@@ -19,7 +19,8 @@ const config: Config = {
             'var(--font-material-icons-rounded), sans-serif', {
           fontVariationSettings: '"FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24'
           }
-        ]
+        ],
+				'icons': ['material', 'cursive'],
       },
       colors: {
         'officemap-black': '#000',

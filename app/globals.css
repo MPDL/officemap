@@ -30,3 +30,8 @@
     -webkit-print-color-adjust: exact;
   }
 }
+
+@font-face {
+	font-family: "material";
+	src: url("../materialFonts.woff2");
+}
