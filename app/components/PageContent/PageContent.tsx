@@ -101,8 +101,8 @@ const PageContent = ({rooms, printers, employees}: Props) => {
                                printerSearchEntity={printerSearchEntity} customSearchEntity={customSearchEntity}
                                setUrlSearchParameter={setUrlSearchParameter}/>
             <Filter>
-                <FilterGroup state={roomFilterState}/>
                 <FilterGroup state={employeeFilterState}/>
+                <FilterGroup state={roomFilterState}/>
                 <FilterGroup state={printerFilterState}/>
             </Filter>
             <Search/>

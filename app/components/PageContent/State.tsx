@@ -26,7 +26,7 @@ export interface MainToggle {
 
 export function useRoomFilterState (rooms: Room[]): FilterGroupState {
   // const color = "officemap-blue" 
-  const color = "blue" 
+  const color = "green" 
 	const symbol:string = "room"
   const name: string = "Rooms"
   const roomTypes: Array<string> = Array.from(new Set<string>(rooms?.map(room => room.type)));
@@ -48,7 +48,7 @@ export function useRoomFilterState (rooms: Room[]): FilterGroupState {
 
 export function useEmployeeFilterState ( employees: Employee[],): FilterGroupState {
   // const color = "officemap-green" 
-	const color = "green"
+	const color = "blue"
   const name: string = "Employees"
   const symbol: string = "person"
   const employeeDepartment: Array<string> = Array.from(new Set<string>(employees?.map(employee => employee.department)));

@@ -19,6 +19,7 @@ const Toggle = ({name, state, onChange, color, symbol} : Props) => {
 		person: "after:content-['person']",
 		room: "after:content-['meeting\\_room']",
 		printer: "after:content-['print']",
+		i: "after:content-['meeting\_room']",
 	}
 
   return (

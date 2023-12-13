@@ -23,7 +23,7 @@ const Search = () => {
                 placeholder="Search for employees, rooms, printers ..." /> 
 					</div>
 					<div>
-            <Suspense fallback={<h2>Loading...</h2>}>
+            <Suspense fallback={<div></div>}>
                 <LoadSearchResults query={query}/>
             </Suspense>
 					</div>
