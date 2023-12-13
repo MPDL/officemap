@@ -44,3 +44,9 @@ yarn.lock
 # test persons data website
 mimir.int.mpdl.mpg.de.html
 start_mock_server.sh
+
+docker/**/.env
+docker/development.local
+api/api
+web/dist
+web/.env.development.local

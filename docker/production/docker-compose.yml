@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  officemap-production-web:
+    build:
+      context: https://github.com/MPDL/officemap.git#production:web
+      dockerfile: Dockerfile
+      target: prod
+    image: officemap-production-web
+    depends_on:
+      officemap-production-api:
+        condition: service_started
+    ports:
+      - '3004:3000'
+  officemap-production-api:
+    build:
+      context: https://github.com/MPDL/officemap.git#production:api
+      dockerfile: Dockerfile
+    environment:
+      - GATEWAY_PORT=$GATEWAY_PORT
+      - GATEWAY_BASE_URL=$GATEWAY_BASE_URL
+      - GATEWAY_URL_PATH=$GATEWAY_URL_PATH
+      - ROOMS_JSON_URL=$ROOMS_JSON_URL
+      - PRINTERS_JSON_URL=$PRINTERS_JSON_URL
+      - GROUNDFLOOR_IMAGE_URL=$GROUNDFLOOR_IMAGE_URL
+    image: officemap-production-api

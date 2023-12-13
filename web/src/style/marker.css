@@ -1,0 +1,35 @@
+.officemap-marker-icon{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.officemap-marker-icon-title{
+    font-size: 10px;
+    width: 100px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*-webkit-text-stroke-width: 1px;*/
+    /*-webkit-text-stroke-color: white;*/
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    font-family: 'OfficeMapNormal', sans-serif;
+}
+
+.officemap-marker-icon-pin{
+    background: center/contain no-repeat;
+    min-height: 41px;
+    min-width: 25px;
+    text-align: center;
+}
+
+.officemap-marker-icon-glyph{
+    margin-top: 4px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.officemap-hide-markers{
+    opacity: 0.4 !important;
+}
