@@ -23,7 +23,7 @@ const ToggleMain = ({state} : ToggleMainState) => {
   }
 
   return (
-    <Toggle name={name} state={state.mainToggle.state} onChange={handleCheckboxChange} color="blue"/>
+    <Toggle name={name} state={state.mainToggle.state} onChange={handleCheckboxChange} color={state.color} symbol={state.symbol} />
   )
 }
 
