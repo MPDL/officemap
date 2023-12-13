@@ -24,3 +24,5 @@ services:
       - PRINTERS_JSON_URL=$PRINTERS_JSON_URL
       - GROUNDFLOOR_IMAGE_URL=$GROUNDFLOOR_IMAGE_URL
     image: officemap-production-api
+    ports:
+      - "8888:8080"
