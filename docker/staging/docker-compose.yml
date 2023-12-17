@@ -1,18 +1,17 @@
 version: '3.8'
 
 services:
-  officemap-staging-web:
+  web:
     build:
       context: https://github.com/MPDL/officemap.git#staging:web
       dockerfile: Dockerfile
       target: staging
-    image: officemap-staging-web
     depends_on:
-      officemap-staging-api:
+      api:
         condition: service_started
     ports:
       - '3003:3000'
-  officemap-staging-api:
+  api:
     build:
       context: https://github.com/MPDL/officemap.git#staging:api
       dockerfile: Dockerfile
@@ -23,6 +22,5 @@ services:
       - ROOMS_JSON_URL=$ROOMS_JSON_URL
       - PRINTERS_JSON_URL=$PRINTERS_JSON_URL
       - GROUNDFLOOR_IMAGE_URL=$GROUNDFLOOR_IMAGE_URL
-    image: officemap-staging-api
     ports:
       - "8787:8080"

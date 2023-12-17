@@ -93,7 +93,20 @@ const frontend = (env) => {
         ],
         output: {
             filename: 'bundle.js',
+            publicPath: getBasePath(env),
             path: path.resolve(__dirname, 'dist'),
         },
+    }
+}
+
+const getBasePath = (env) => {
+    switch (env.OFFICEMAP_ENV) {
+        case 'production':
+        case 'development.local':
+            return '/'
+        case 'staging':
+            return '/staging/'
+        default:
+            return '/'
     }
 }
