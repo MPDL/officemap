@@ -194,7 +194,7 @@ export class LeafletMapController {
         this.room_markers = L.layerGroup()
         this.map.addLayer(this.room_markers)
         rooms.filter(room => roomFilter.toggles.get(room.type)).forEach(
-            room => this.room_markers?.addLayer(this.polygonFactory.createRoomPolygon(room, "hsl(146, 50%, 40%)")))
+            room => this.room_markers?.addLayer(this.polygonFactory.createRoomPolygon(room, roomFilter.colors.get(room.type) || "hsl(146, 50%, 40%)")))
     }
 
     public filterPrinter(printers: Printer[], printerFilter: FilterGroupState){
