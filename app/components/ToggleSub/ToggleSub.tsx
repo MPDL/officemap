@@ -19,7 +19,7 @@ const ToggleSub = ({name, state} : ToggleSubState) => {
   }
 
   return (
-    <Toggle name={name} state={state.toggles.get(name) || false} onChange={handleCheckboxChange} color={state.color} symbol={state.symbol} />
+    <Toggle name={name} state={state.toggles.get(name) || false} onChange={handleCheckboxChange} color={state.colors.get(name) || state.color} symbol={state.symbol} />
   )
 }
 

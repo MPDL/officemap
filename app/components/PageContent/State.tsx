@@ -26,17 +26,24 @@ export interface MainToggle {
 
 export function useRoomFilterState (rooms: Room[]): FilterGroupState {
   // const color = "officemap-blue" 
-  const color = "green" 
+  const color = "hsl(146, 50%, 40%)"
 	const symbol:string = "room"
   const name: string = "Rooms"
   const roomTypes: Array<string> = Array.from(new Set<string>(rooms?.map(room => room.type)));
 
   const colors: Map<string,string>= new Map();
   const toggleStates: ToggleStates = new Map();
-  roomTypes.forEach(type => {
-    toggleStates.set(type, true)
-    colors.set(type, color)
-  })
+
+	let partialRoomColor = 'hsl(146, 50%, '
+	let startLightness = 40
+
+	roomTypes.forEach((room) => {
+		// colors.set(room, color)
+    toggleStates.set(room, true)
+		colors.set(room, partialRoomColor+startLightness+'%)')
+		startLightness += 10
+	})
+
   colors.set(name, color)
 
   const [toggles, setStates] = useState(toggleStates)
@@ -47,8 +54,7 @@ export function useRoomFilterState (rooms: Room[]): FilterGroupState {
 };
 
 export function useEmployeeFilterState ( employees: Employee[],): FilterGroupState {
-  // const color = "officemap-green" 
-	const color = "blue"
+	const color = "#1E90FF"
   const name: string = "Employees"
   const symbol: string = "person"
   const employeeDepartment: Array<string> = Array.from(new Set<string>(employees?.map(employee => employee.department)));
@@ -70,7 +76,7 @@ export function useEmployeeFilterState ( employees: Employee[],): FilterGroupSta
 
 export function usePrinterFilterState (printers: Printer[]) {
   // const color = "officemap-brown" 
-	const color = "brown"
+	const color = "#c46512"
   const name: string = "Printers"
   const symbol: string = "printer"
 
