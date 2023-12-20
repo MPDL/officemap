@@ -5,7 +5,7 @@ import Filter from '../Filter/Filter'
 import dynamic from 'next/dynamic'
 import {Room, Employee, Printer, useEmployees, useEmployee, usePrinter, useRoom} from '@/app/api/api'
 import FilterGroup from '../FilterGroup/FilterGroup'
-import {useEmployeeFilterState, useRoomFilterState, usePrinterFilterState} from './State'
+import {useEmployeeFilterState, useRoomFilterState, usePrinterFilterState, useFocusState} from './State'
 import Search from '../Search/Search'
 import {useSearchParams} from "next/navigation";
 import {LatLng} from "leaflet";
@@ -29,6 +29,7 @@ const PageContent = ({rooms, printers, employees}: Props) => {
     const roomFilterState = useRoomFilterState(rooms);
     const employeeFilterState = useEmployeeFilterState(employees);
     const printerFilterState = usePrinterFilterState(printers);
+		const focusState = useFocusState();
     const searchParams = useSearchParams()
     const installation_mode: boolean = searchParams.get('installation') !== null
     const employeeSearchEntityParameter: string | null = searchParams.get('employee')
@@ -105,7 +106,7 @@ const PageContent = ({rooms, printers, employees}: Props) => {
                 <FilterGroup state={roomFilterState}/>
                 <FilterGroup state={printerFilterState}/>
             </Filter>
-            <Search/>
+            <Search focus={focusState}/>
             {!installation_mode ? (
                 <div className={"action button print absolute"}></div>
             ): (

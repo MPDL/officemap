@@ -3,33 +3,41 @@ import { SearchResultItem, fetchSearch, useSearch } from '@/app/api/api'
 import React, { Suspense, useCallback, useState } from 'react'
 import SearchResults from '../SearchResults/SearchResults'
 import LoadSearchResults from '../SearchResults/SearchResults'
+import { FocusState } from '../PageContent/State'
 
-const Search = () => {
-    const [query, setQuery] = useState<string>("")
+interface Props {
+	focus: FocusState
+}
 
-    return (
-        <div className='flex flex-col left-1/2  transform -translate-x-1/2  w-1/2 absolute top-5 shadow-xl rounded-3xl p-4 bg-white divide-y'>
-					<div className='flex content-center'>
-						<div className='symbol text-2xl text-gray-400'>
-							search
-						</div>
-            <input
-                className="peer content-center h-full w-full outline-none text-base text-gray-700 px-2"
-                type="text"
-                id="search"
-                value={query}
-                onChange={(e) => {setQuery(e.target.value)}}
-								autoComplete="off"
-                placeholder="Search for employees, rooms, printers ..." /> 
-						<button className='symbol text-2xl text-gray-400' onClick={() => {setQuery("")}}>
-								close
-						</button>
-					</div>
-					<Suspense>
-							<LoadSearchResults query={query}/>
-					</Suspense>
-        </div>
-    )
+const Search = ({focus} : Props) => {
+	const [query, setQuery] = useState<string>("")
+	const resetQuery = () => {
+		setQuery("")
+	}
+
+	return (
+		<div className='flex flex-col left-1/2  transform -translate-x-1/2  w-1/2 absolute top-5 shadow-xl rounded-3xl p-4 bg-white divide-y'>
+			<div className='flex content-center'>
+				<div className='symbol text-2xl text-gray-400'>
+					search
+				</div>
+				<input
+					className="peer content-center h-full w-full outline-none text-base text-gray-700 px-2"
+					type="text"
+					id="search"
+					value={query}
+					onChange={(e) => {setQuery(e.target.value)}}
+					autoComplete="off"
+					placeholder="Search for employees, rooms, printers ..." /> 
+				<button className='symbol text-2xl text-gray-400' onClick={() => {setQuery("")}}>
+					close
+				</button>
+			</div>
+			<Suspense>
+				<LoadSearchResults query={query} focus={focus} resetQuery={resetQuery}/>
+			</Suspense>
+		</div>
+	)
 }
 
 

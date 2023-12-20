@@ -85,7 +85,7 @@ export function useEmployeeFilterState ( employees: Employee[],): FilterGroupSta
   return {toggles, setStates, mainToggle, colors, symbol, color} as FilterGroupState;
 };
 
-export function usePrinterFilterState (printers: Printer[]) {
+export function usePrinterFilterState (printers: Printer[]) : FilterGroupState {
   // const color = "officemap-brown" 
 	const color = "#c46512"
   const name: string = "Printers"
@@ -101,7 +101,7 @@ export function usePrinterFilterState (printers: Printer[]) {
   return {toggles, setStates, mainToggle, colors, symbol, color} as FilterGroupState;
 };
 
-export function useFocus () {
+export function useFocusState () : FocusState {
 	const focus = { object: null, type: "none" } as Focus
 
 	const [state, setState] = useState(focus)

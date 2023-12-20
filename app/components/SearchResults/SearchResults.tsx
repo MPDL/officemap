@@ -1,13 +1,16 @@
 'use client'
 import { SearchResultItem, fetchSearch, useSearch } from '@/app/api/api'
-import React, { use } from 'react'
+import React, { Dispatch, SetStateAction, use } from 'react'
 import SearchResult from '../SearchResult/SearchResult'
+import { FocusState } from '../PageContent/State'
 
 interface Props {
-    query: string
+	query: string
+	focus: FocusState
+	resetQuery: () => void 
 }
 
-const SearchResults = ({query} : Props) => {
+const SearchResults = ({query, resetQuery, focus} : Props) => {
     const results = use(fetchSearch(query))
     if (results == undefined || results.length == 0)
         return <></>
@@ -18,7 +21,7 @@ const SearchResults = ({query} : Props) => {
 								results.sort((n1, n2) => n1.priority - n2.priority)
 								.slice(0, 10)
 								.map((entry, key)  => {
-										return <SearchResult key={key} entry={entry}/>
+										return <SearchResult key={key} entry={entry} focus={focus} resetQuery={resetQuery}/>
 								})}
 						{
 							results.length > 10 ? (
