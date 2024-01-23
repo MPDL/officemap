@@ -6,12 +6,15 @@ import (
 )
 
 type ProgramArguments struct {
-	GatewayPort         string
-	GatewayBaseUrl      string
-	GatewayUrlPath      string
-	RoomsJsonUrl        string
-	PrintersJsonUrl     string
-	GroundfloorImageUrl string
+	GatewayPort                string
+	GatewayBaseUrl             string
+	GatewayUrlPath             string
+	RoomsJsonUrl               string
+	PrintersJsonUrl            string
+	GroundfloorImageUrl        string
+	EmailTo                    string
+	OnEmployeeUpdateEmailTitle string
+	SendEmailOnEmployeeUpdate  bool
 }
 
 func (programArgs ProgramArguments) ProgramArgsToString() string {
@@ -24,5 +27,8 @@ func (programArgs ProgramArguments) ProgramArgsToString() string {
 	sb.WriteString(fmt.Sprintln("  RoomsJsonUrl: ", programArgs.RoomsJsonUrl))
 	sb.WriteString(fmt.Sprintln("  PrintersJsonUrl: ", programArgs.PrintersJsonUrl))
 	sb.WriteString(fmt.Sprintln("  GroundfloorImageUrl: ", programArgs.GroundfloorImageUrl))
+	sb.WriteString(fmt.Sprintln("  EmailTo: ", programArgs.EmailTo))
+	sb.WriteString(fmt.Sprintln("  OnEmployeeUpdateEmailTitle: ", programArgs.OnEmployeeUpdateEmailTitle))
+	sb.WriteString(fmt.Sprintln("  SendEmailOnEmployeeUpdate: ", programArgs.SendEmailOnEmployeeUpdate))
 	return sb.String()
 }

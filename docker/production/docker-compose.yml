@@ -11,6 +11,7 @@ services:
         condition: service_started
     ports:
       - '3004:3000'
+    restart: always
   api:
     build:
       context: https://github.com/MPDL/officemap.git#production:api
@@ -22,5 +23,9 @@ services:
       - ROOMS_JSON_URL=$ROOMS_JSON_URL
       - PRINTERS_JSON_URL=$PRINTERS_JSON_URL
       - GROUNDFLOOR_IMAGE_URL=$GROUNDFLOOR_IMAGE_URL
+      - EMAIL_TO=$EMAIL_TO
+      - ON_EMPLOYEE_UPDATE_EMAIL_TITLE=$ON_EMPLOYEE_UPDATE_EMAIL_TITLE
+      - SEND_EMAIL_ON_EMPLOYEE_UPDATE=$SEND_EMAIL_ON_EMPLOYEE_UPDATE
     ports:
       - "8888:8080"
+    restart: always

@@ -1,13 +1,14 @@
 package endpoint
 
 import (
+	"api/leaflet_map"
+	"api/store"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"api/leaflet_map"
 )
 
-func StartHttpServer(employeeStore *leaflet_map.EmployeeStore, rooms []leaflet_map.Room, printers []leaflet_map.Printer, groundfloor []byte) {
+func StartHttpServer(employeeStore *store.EmployeeStore, rooms []leaflet_map.Room, printers []leaflet_map.Printer, groundfloor []byte) {
 	endpointPrinter := mapLeafletPrinterToEndpointPrinter(printers)
 	endpointPrinterMap := mapLeafletPrintersToEndpointPrintersMap(printers)
 

@@ -4,18 +4,18 @@ import (
 	"api/config"
 	"api/endpoint"
 	"api/leaflet_map"
+	"api/mail"
+	"api/static_assets_loader"
+	"api/store"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
-	"api/static_assets_loader"
 	"syscall"
 )
 
 func main() {
-	// TODO: move map image to a vpn closed server
-
 	fmt.Println("Get program arguments ...")
 	arguments := GetProgramArguments()
 	fmt.Println(arguments.ProgramArgsToString())
@@ -25,8 +25,15 @@ func main() {
 
 	fmt.Println("Get employees from gateway ...")
 	employeeUrl := arguments.GatewayBaseUrl + ":" + arguments.GatewayPort + arguments.GatewayUrlPath
-	employeeStore := leaflet_map.EmployeeStore{}
-	employeeStore.Init(employeeUrl, 1, convertedRooms)
+	onEmployeeUpdateMailer := mail.Mailer{}
+	onEmployeeUpdateMailer.Init(mail.Config{
+		FromAddress:  "Officemap <no-reply@officemap.int.mpdl.mpg.de>",
+		ToAddress:    arguments.EmailTo,
+		EmailSubject: arguments.OnEmployeeUpdateEmailTitle,
+		DoSendMails:  arguments.SendEmailOnEmployeeUpdate,
+	})
+	employeeStore := store.EmployeeStore{}
+	employeeStore.Init(employeeUrl, 86400, convertedRooms, &onEmployeeUpdateMailer)
 	employeeStore.StartPeriodicSync()
 
 	printers := static_assets_loader.LoadPrinterJson(arguments.PrintersJsonUrl)
@@ -49,20 +56,26 @@ func GetProgramArguments() config.ProgramArguments {
 	roomsJsonUrl := flag.String("roomsJsonUrl", "http://example:2222/example/data.json", "The url to the rooms json file.")
 	printersJsonUrl := flag.String("printersJsonUrl", "http://example:2222/example/data.json", "The url to the printers json file.")
 	groundfloorImageUrl := flag.String("groundfloorImageUrl", "http://example:2222/data.png", "The url to the groundfloor image file.")
+	emailTo := flag.String("emailTo", "", "The email addresses to send to.")
+	onEmployeeUpdateEmailTitle := flag.String("onEmployeeUpdateEmailTitle", "Employee update", "The title of the email when there are changes to the employee list.")
+	sendEmailOnEmployeeUpdate := flag.Bool("sendEmailOnEmployeeUpdate", false, "Determines if an email will be sent when there are changes to the employee list.")
 
 	flag.Parse()
 
 	return config.ProgramArguments{
-		GatewayPort:         *gatewayPort,
-		GatewayBaseUrl:      *gatewayBaseUrl,
-		GatewayUrlPath:      *gatewayUrlPath,
-		RoomsJsonUrl:        *roomsJsonUrl,
-		PrintersJsonUrl:     *printersJsonUrl,
-		GroundfloorImageUrl: *groundfloorImageUrl,
+		GatewayPort:                *gatewayPort,
+		GatewayBaseUrl:             *gatewayBaseUrl,
+		GatewayUrlPath:             *gatewayUrlPath,
+		RoomsJsonUrl:               *roomsJsonUrl,
+		PrintersJsonUrl:            *printersJsonUrl,
+		GroundfloorImageUrl:        *groundfloorImageUrl,
+		EmailTo:                    *emailTo,
+		OnEmployeeUpdateEmailTitle: *onEmployeeUpdateEmailTitle,
+		SendEmailOnEmployeeUpdate:  *sendEmailOnEmployeeUpdate,
 	}
 }
 
-func ListenToSystemSignals(employeeStore *leaflet_map.EmployeeStore) *chan bool {
+func ListenToSystemSignals(employeeStore *store.EmployeeStore) *chan bool {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	done := make(chan bool, 1)

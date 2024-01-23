@@ -24,6 +24,21 @@ type Employee struct {
 	Email       string
 }
 
+type ModifiedEmployee struct {
+	Firstname  ModifiedStringValue
+	Lastname   ModifiedStringValue
+	Department ModifiedStringValue
+	Room       ModifiedStringValue
+	Phone      ModifiedStringValue
+	Email      ModifiedStringValue
+}
+
+type ModifiedStringValue struct {
+	OldValue string
+	NewValue string
+	Modified bool
+}
+
 type Printer struct {
 	Id     int
 	Name   string
