@@ -33,7 +33,7 @@ func main() {
 		DoSendMails:  arguments.SendEmailOnEmployeeUpdate,
 	})
 	employeeStore := store.EmployeeStore{}
-	employeeStore.Init(employeeUrl, 86400, convertedRooms, &onEmployeeUpdateMailer)
+	employeeStore.Init(employeeUrl, 120, convertedRooms, &onEmployeeUpdateMailer)
 	employeeStore.StartPeriodicSync()
 
 	printers := static_assets_loader.LoadPrinterJson(arguments.PrintersJsonUrl)
