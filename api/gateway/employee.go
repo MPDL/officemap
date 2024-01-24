@@ -1,13 +1,13 @@
 package gateway
 
 import (
+	"api/html_parser"
 	"bytes"
 	"encoding/binary"
 	"fmt"
 	"golang.org/x/net/html"
 	"io"
 	"net/http"
-	"api/html_parser"
 	"strings"
 	"unicode/utf16"
 )
@@ -23,7 +23,7 @@ func GetEmployees(gatewayUrl string) []html_parser.Employee {
 
 	// Check response code
 	if resp.StatusCode != 200 {
-		fmt.Println("error code not 200: " + err.Error())
+		fmt.Println("error code not 200: " + resp.Status)
 		return []html_parser.Employee{}
 	}
 
