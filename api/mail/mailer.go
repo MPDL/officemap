@@ -53,7 +53,7 @@ func (m *Mailer) sendMailAsync(message string) {
 
 	sendMailOutput, errSendmail := sendmailCmd.Output()
 
-	log.Println(sendMailOutput)
+	log.Println(fmt.Sprint("sendmail output: ", sendMailOutput))
 
 	if errSendmail != nil {
 		log.Println(errSendmail.Error())
