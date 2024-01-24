@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func main() {
@@ -60,7 +61,7 @@ func GetProgramArguments() config.ProgramArguments {
 	onEmployeeUpdateEmailTitle := flag.String("onEmployeeUpdateEmailTitle", "Employee update", "The title of the email when there are changes to the employee list.")
 	sendEmailOnEmployeeUpdate := flag.Bool("sendEmailOnEmployeeUpdate", false, "Determines if an email will be sent when there are changes to the employee list.")
 	apiPort := flag.Int("apiPort", 8080, "Api port.")
-	employeeRefreshRate := flag.Duration("employeeRefreshRate", 86400, "Refresh rate of the employee update in seconds.")
+	employeeRefreshRate := flag.Duration("employeeRefreshRate", 86400*time.Second, "Refresh rate of the employee update in seconds.")
 
 	flag.Parse()
 
