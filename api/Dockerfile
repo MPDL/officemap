@@ -24,4 +24,5 @@ EXPOSE 8080
 # Run
 CMD ./api -gatewayPort=$GATEWAY_PORT -gatewayBaseUrl=$GATEWAY_BASE_URL -gatewayUrlPath=$GATEWAY_URL_PATH \
 -roomsJsonUrl=$ROOMS_JSON_URL -printersJsonUrl=$PRINTERS_JSON_URL -groundfloorImageUrl=$GROUNDFLOOR_IMAGE_URL \
--emailTo=$EMAIL_TO -onEmployeeUpdateEmailTitle=$ON_EMPLOYEE_UPDATE_EMAIL_TITLE -sendEmailOnEmployeeUpdate=$SEND_EMAIL_ON_EMPLOYEE_UPDATE
+-emailTo=$EMAIL_TO -onEmployeeUpdateEmailTitle=$ON_EMPLOYEE_UPDATE_EMAIL_TITLE -sendEmailOnEmployeeUpdate=$SEND_EMAIL_ON_EMPLOYEE_UPDATE \
+-employeeRefreshRate=$EMPLOYEE_REFRESH_RATE

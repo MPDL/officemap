@@ -12,7 +12,7 @@ import (
 
 type EmployeeStore struct {
 	employeeHtmlUrl        string
-	updateInSeconds        int
+	updateInSeconds        time.Duration
 	EmployeesMapOld        map[string]leaflet_map.Employee
 	Employees              *[]leaflet_map.Employee
 	EmployeesMap           *map[string]leaflet_map.Employee
@@ -22,7 +22,7 @@ type EmployeeStore struct {
 	onEmployeeUpdateMailer *mail.Mailer
 }
 
-func (idc *EmployeeStore) Init(employeeHtmlUrl string, updateInSeconds int, rooms []leaflet_map.Room, onEmployeeUpdateMailer *mail.Mailer) {
+func (idc *EmployeeStore) Init(employeeHtmlUrl string, updateInSeconds time.Duration, rooms []leaflet_map.Room, onEmployeeUpdateMailer *mail.Mailer) {
 	idc.employeeHtmlUrl = employeeHtmlUrl
 	idc.updateInSeconds = updateInSeconds
 	idc.onEmployeeUpdateMailer = onEmployeeUpdateMailer
@@ -51,11 +51,11 @@ func (idc *EmployeeStore) loadData() {
 }
 
 func (idc *EmployeeStore) StartPeriodicSync() *chan bool {
-	if idc.updateInSeconds <= 0 {
+	if idc.updateInSeconds <= 2 {
 		log.Println("EmployeeUpdater disabled.")
 		return nil
 	}
-	idc.ticker = time.NewTicker(time.Duration(idc.updateInSeconds) * time.Second)
+	idc.ticker = time.NewTicker(idc.updateInSeconds * time.Second)
 	idc.done = make(chan bool)
 
 	go func() {

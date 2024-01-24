@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func StartHttpServer(employeeStore *store.EmployeeStore, rooms []leaflet_map.Room, printers []leaflet_map.Printer, groundfloor []byte) {
+func StartHttpServer(employeeStore *store.EmployeeStore, rooms []leaflet_map.Room, printers []leaflet_map.Printer, groundfloor []byte, apiPort int) {
 	endpointPrinter := mapLeafletPrinterToEndpointPrinter(printers)
 	endpointPrinterMap := mapLeafletPrintersToEndpointPrintersMap(printers)
 
@@ -50,5 +50,5 @@ func StartHttpServer(employeeStore *store.EmployeeStore, rooms []leaflet_map.Roo
 	})
 
 	fmt.Println("Starting server ...")
-	router.Run("0.0.0.0:8080")
+	router.Run(fmt.Sprintf("0.0.0.0:%d", apiPort))
 }

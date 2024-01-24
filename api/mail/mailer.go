@@ -2,6 +2,7 @@ package mail
 
 import (
 	"fmt"
+	"log"
 	"os/exec"
 )
 
@@ -23,6 +24,7 @@ func (m *Mailer) SendMail(message string) {
 	// this needs to be executed concurrently to avoid waiting for the mail dialer response. If using the GWDG mailer
 	// for example, and the program runs not on a GWDG server the connection can not be established after several seconds.
 	if m.doSendMails {
+		log.Println("Sending mail...")
 		go m.sendMailAsync(message)
 	}
 }
@@ -39,7 +41,7 @@ func (m *Mailer) sendMailAsync(message string) {
 
 	pipe, errPipe := echoCmd.StdoutPipe()
 	if errPipe != nil {
-		fmt.Println(errPipe.Error())
+		log.Println(errPipe.Error())
 		return
 	}
 	defer pipe.Close()
@@ -49,10 +51,12 @@ func (m *Mailer) sendMailAsync(message string) {
 	// Run ps first.
 	echoCmd.Start()
 
-	_, errSendmail := sendmailCmd.Output()
+	sendMailOutput, errSendmail := sendmailCmd.Output()
+
+	log.Println(sendMailOutput)
 
 	if errSendmail != nil {
-		fmt.Println(errSendmail.Error())
+		log.Println(errSendmail.Error())
 		return
 	}
 }
