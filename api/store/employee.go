@@ -51,11 +51,11 @@ func (idc *EmployeeStore) loadData() {
 }
 
 func (idc *EmployeeStore) StartPeriodicSync() *chan bool {
-	if idc.updateInSeconds <= 2 {
+	if idc.updateInSeconds.Seconds() <= 2 {
 		log.Println("EmployeeUpdater disabled.")
 		return nil
 	}
-	idc.ticker = time.NewTicker(idc.updateInSeconds * time.Second)
+	idc.ticker = time.NewTicker(idc.updateInSeconds)
 	idc.done = make(chan bool)
 
 	go func() {
