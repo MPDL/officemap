@@ -33,7 +33,7 @@ func main() {
 		DoSendMails:  arguments.SendEmailOnEmployeeUpdate,
 	})
 	employeeStore := store.EmployeeStore{}
-	employeeStore.Init(employeeUrl, 86400, convertedRooms, &onEmployeeUpdateMailer)
+	employeeStore.Init(employeeUrl, arguments.EmployeeRefreshRate, convertedRooms, &onEmployeeUpdateMailer)
 	employeeStore.StartPeriodicSync()
 
 	printers := static_assets_loader.LoadPrinterJson(arguments.PrintersJsonUrl)
@@ -46,7 +46,7 @@ func main() {
 	ListenToSystemSignals(&employeeStore)
 
 	fmt.Println("Init api ...")
-	endpoint.StartHttpServer(&employeeStore, convertedRooms, mappedPrinters, image)
+	endpoint.StartHttpServer(&employeeStore, convertedRooms, mappedPrinters, image, arguments.ApiPort)
 }
 
 func GetProgramArguments() config.ProgramArguments {
@@ -59,6 +59,8 @@ func GetProgramArguments() config.ProgramArguments {
 	emailTo := flag.String("emailTo", "", "The email addresses to send to.")
 	onEmployeeUpdateEmailTitle := flag.String("onEmployeeUpdateEmailTitle", "Employee update", "The title of the email when there are changes to the employee list.")
 	sendEmailOnEmployeeUpdate := flag.Bool("sendEmailOnEmployeeUpdate", false, "Determines if an email will be sent when there are changes to the employee list.")
+	apiPort := flag.Int("apiPort", 8080, "Api port.")
+	employeeRefreshRate := flag.Duration("employeeRefreshRate", 86400, "Refresh rate of the employee update in seconds.")
 
 	flag.Parse()
 
@@ -72,6 +74,8 @@ func GetProgramArguments() config.ProgramArguments {
 		EmailTo:                    *emailTo,
 		OnEmployeeUpdateEmailTitle: *onEmployeeUpdateEmailTitle,
 		SendEmailOnEmployeeUpdate:  *sendEmailOnEmployeeUpdate,
+		ApiPort:                    *apiPort,
+		EmployeeRefreshRate:        *employeeRefreshRate,
 	}
 }
 

@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 type ProgramArguments struct {
@@ -15,6 +16,8 @@ type ProgramArguments struct {
 	EmailTo                    string
 	OnEmployeeUpdateEmailTitle string
 	SendEmailOnEmployeeUpdate  bool
+	ApiPort                    int
+	EmployeeRefreshRate        time.Duration
 }
 
 func (programArgs ProgramArguments) ProgramArgsToString() string {
@@ -30,5 +33,7 @@ func (programArgs ProgramArguments) ProgramArgsToString() string {
 	sb.WriteString(fmt.Sprintln("  EmailTo: ", programArgs.EmailTo))
 	sb.WriteString(fmt.Sprintln("  OnEmployeeUpdateEmailTitle: ", programArgs.OnEmployeeUpdateEmailTitle))
 	sb.WriteString(fmt.Sprintln("  SendEmailOnEmployeeUpdate: ", programArgs.SendEmailOnEmployeeUpdate))
+	sb.WriteString(fmt.Sprintln("  ApiPort: ", programArgs.ApiPort))
+	sb.WriteString(fmt.Sprintln("  EmployeeRefreshRate: ", programArgs.EmployeeRefreshRate))
 	return sb.String()
 }
